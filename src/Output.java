@@ -63,6 +63,49 @@ public static void main(String args[])
             try
                 {
                     outputString = in.readUTF();
+                    
+                    
+                    switch(outputString)
+                    {
+                    	case "w":
+                    		if(LastInput.compareTo("w") !=0) 
+                    		{
+                    			window.getContentPane().setBackground(Color.BLUE);
+                    			System.out.println(outputString);		
+                    		}
+                        break;
+                        
+                    	case "a":
+                    		if(LastInput.compareTo("a") !=0) 
+                    		{
+                    			window.getContentPane().setBackground(Color.RED);
+                    			System.out.println(outputString);		
+                    		}
+                        break;
+                        
+                    	case "s":
+                    		if(LastInput.compareTo("s") !=0) 
+                    		{
+                    			window.getContentPane().setBackground(Color.YELLOW);
+                    			System.out.println(outputString);		
+                    		}
+                        break;
+                        
+                    	case "d":
+                    		if(LastInput.compareTo("d") !=0) 
+                    		{
+                    			window.getContentPane().setBackground(Color.GREEN);
+                    			System.out.println(outputString);		
+                    		}
+                    	break;
+                    	
+                    	case "CLEAR":
+                			window.getContentPane().setBackground(Color.WHITE);
+                			System.out.println(outputString);
+                        break;
+                    }
+                    
+ /*                   
                     if(outputString.equals("w") && LastInput.compareTo("w") !=0)
                     {
                         window.getContentPane().setBackground(Color.BLUE);
@@ -72,7 +115,7 @@ public static void main(String args[])
                     {
                         window.getContentPane().setBackground(Color.WHITE);
                     }
-                    
+*/
                   LastInput = outputString;
                 }
                 catch(IOException i)
