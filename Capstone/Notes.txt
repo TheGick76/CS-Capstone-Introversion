@@ -1,0 +1,11 @@
+-Two main methods of Inter Proccessing Connections (IPC)
+-One method usues a shared memory space
+-The other sends message to the Kernel and then the Kernel to the other proccess
+-Will try option 2 first
+-https://www.youtube.com/watch?v=LuuSXWkDJOo
+-This method is aso useful over distributed enivornments, ie on different computers / networks
+
+-Consider using Pipes
+https://www.geeksforgeeks.org/ipc-technique-pipes/
+
+-JMS????
