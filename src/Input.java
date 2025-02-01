@@ -9,13 +9,16 @@ import javax.swing.*;
 //Class input extend the contents of JFrame and implements KeyListener
 class Input extends JFrame implements KeyListener{
 
-    //Initialize our sockets and viarables
+    //Initialize our string that will be used for storing which key was pressed
     public String InputString = "";
 
-    public DataInputStream InputReader = new DataInputStream(System.in);
+    //Create a data stream for terminal 
+  //  public DataInputStream InputReader = new DataInputStream(System.in);
 
+    //Create a socket for communication
     public static Socket inputSocket = null;
 
+    //Create output stream for our inputs
     public static DataOutputStream out = null;
 
     //Our main function
@@ -23,10 +26,13 @@ class Input extends JFrame implements KeyListener{
     {
         //Creates an instance of Input
         new Input();
-        //Create Queue stuff
+
+        //Try and create the input socket
         try
         {
+            //Creating socket with local loop back IP and an arbitrary port
           inputSocket = new Socket("127.0.0.1", 1027);
+          //Will take data and and send it out that is sent from the socket
           out = new DataOutputStream(inputSocket.getOutputStream());
         }
         catch (IOException e) {
@@ -65,6 +71,7 @@ class Input extends JFrame implements KeyListener{
        //When key is pressed print the code of the key
         System.out.println(e.getKeyCode());
        
+        //Try and take the pressed key and send it out
         try
         {
            // InputString = e.getKeyChar();
@@ -72,6 +79,7 @@ class Input extends JFrame implements KeyListener{
             System.out.println(InputString);
             out.writeUTF(InputString);
         }
+        //If there was an error
         catch (IOException i)
         {
             System.out.println(i);
@@ -82,13 +90,13 @@ class Input extends JFrame implements KeyListener{
     @Override
     public void keyReleased(KeyEvent e) {
       //  throw new UnsupportedOperationException("Not supported yet.");
+      //Try and send when the key has been released
       try
         {
-           // InputString = e.getKeyChar();
-          //  InputString = Character.toString(e.getKeyChar());
-          //  System.out.println(InputString);
+            //Send out string "CLEAR" whihch will be interpreted as key has been released
             out.writeUTF("CLEAR");
         }
+        //If there was an error sending that out
         catch (IOException i)
         {
             System.out.println(i);
