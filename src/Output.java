@@ -1,5 +1,5 @@
 //Importing what we need for creating a window
-import java.awt.Color;
+import java.awt.*;
 import java.io.*;
 import java.net.*;
 import javax.swing.*;
@@ -67,6 +67,9 @@ public static void main(String args[])
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //sets sizze of window
         setSize(500,500);
+        //sets window 10px off the top right corner
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize(); 
+        setLocation(dim.width - getSize().width - 10, 10);
         //sets window visible
         setVisible(true);
     }
