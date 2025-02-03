@@ -1,6 +1,6 @@
 //Importing what we need for creating a window
 
-//Importing what we need for listners and windows
+//Importing what we need for listners and frames
 import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -19,23 +19,25 @@ class Input extends JFrame implements KeyListener{
     //Initialize our sockets and viarables
     public String InputString = "";
 
-    public DataInputStream InputReader = new DataInputStream(System.in);
-
+    //Creates our socket which will connect to the server
     public static Socket inputSocket = null;
 
+    //How we will be sending our data
     public static DataOutputStream out = null;
 
+    //A label that will contain text that will have the status of the server connection
     private static JLabel ServerStatus = new JLabel("Server Status: Unconnected");
     
-    
+    //Images 
     private Image Image = new ImageIcon("R.jpg").getImage();
     private Image CenterImage = new ImageIcon("Horse.jpg").getImage();
     
-    
+    //For rendering the images and their offsets
     private static float[] Render = {.25f,.25f,.25f,.25f}; 
     private static int[][] PicPos = new int[4][2];	// X cord , Y cord
     private static int key = 4;
     
+    //Locking inputs
     private static boolean CanReInput= true;
     private static char keyPressed = '&';
     private static boolean CanRePaint = true;
@@ -44,11 +46,8 @@ class Input extends JFrame implements KeyListener{
     public static void main(String args[])
     {
         //Creates an instance of Input
+        //Class of Input has already implements key listners and JFrame stuff
         new Input();
-
-        //Create Queue stuff
-        //Connect(User typed IP);
-       // Connect();
         
     }
     //Input constructor
@@ -71,19 +70,27 @@ class Input extends JFrame implements KeyListener{
         setFocusTraversalKeysEnabled(false);
         //Adds Keylsitener to this instance
         addKeyListener(this);
-        //Add text label
+        //Sets alignment of where the text should appear
         ServerStatus.setHorizontalAlignment(SwingConstants.LEFT);
         ServerStatus.setVerticalAlignment(SwingConstants.TOP);
         //Add button
         JButton ServerConnectButton = new JButton("Connect");
+        //Creates and adds a new action listener
         ServerConnectButton.addActionListener(new ActionListener(){
+
+            //Using this method as to not overload
+            //Key listner with if statements and bog it down anymore
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                //When clicked try to connect
+                //Possible Connect(User Typed IP); For cross machine IPC
                 Connect();
             }
         });
+        //Stops the action lsitener from taking priority over the key listener
         ServerConnectButton.setFocusable(false);
+        //Addthing the text and button, with layout
         add(ServerStatus);
         add(ServerConnectButton, BorderLayout.PAGE_END);
         //Sets window visible
@@ -91,16 +98,20 @@ class Input extends JFrame implements KeyListener{
         setResizable(false);
     }
 
+    //Function for trying to connect to server
     public static void Connect()
     {
+        //Try to connect
         try
         {
+            //If succesful
          inputSocket = new Socket("127.0.0.1", 1027);
          out = new DataOutputStream(inputSocket.getOutputStream());
          ServerStatus.setText("Connected!");
          }
          catch (IOException e) 
          {
+            //if unsuccessful
         e.printStackTrace();
         ServerStatus.setText("Failed to connect! Try again?");
          }
@@ -112,7 +123,7 @@ class Input extends JFrame implements KeyListener{
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         
-        
+    
         System.out.println("draw");
         
         // Get the size of the window
