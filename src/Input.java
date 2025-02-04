@@ -26,7 +26,9 @@ class Input extends JFrame implements KeyListener{
     public static DataOutputStream out = null;
 
     //A label that will contain text that will have the status of the server connection
-    private static JLabel ServerStatus = new JLabel("Server Status: Unconnected");
+  //  private static JLabel ServerStatus = new JLabel("Server Status: Unconnected");
+
+     private static String ServerStatus = "Server Status: Unconnected";
     
     //Images 
     private Image Image = new ImageIcon("R.jpg").getImage();
@@ -71,8 +73,8 @@ class Input extends JFrame implements KeyListener{
         //Adds Keylsitener to this instance
         addKeyListener(this);
         //Sets alignment of where the text should appear
-        ServerStatus.setHorizontalAlignment(SwingConstants.LEFT);
-        ServerStatus.setVerticalAlignment(SwingConstants.TOP);
+    //    ServerStatus.setHorizontalAlignment(SwingConstants.LEFT);
+      //  ServerStatus.setVerticalAlignment(SwingConstants.TOP);
         //Add button
         JButton ServerConnectButton = new JButton("Connect");
         //Creates and adds a new action listener
@@ -91,7 +93,7 @@ class Input extends JFrame implements KeyListener{
         //Stops the action lsitener from taking priority over the key listener
         ServerConnectButton.setFocusable(false);
         //Addthing the text and button, with layout
-        add(ServerStatus);
+     //   add(ServerStatus);
         add(ServerConnectButton, BorderLayout.PAGE_END);
         //Sets window visible
         setVisible(true);
@@ -99,7 +101,7 @@ class Input extends JFrame implements KeyListener{
     }
 
     //Function for trying to connect to server
-    public static void Connect()
+    public void Connect()
     {
         //Try to connect
         try
@@ -107,13 +109,17 @@ class Input extends JFrame implements KeyListener{
             //If succesful
          inputSocket = new Socket("127.0.0.1", 1027);
          out = new DataOutputStream(inputSocket.getOutputStream());
-         ServerStatus.setText("Connected!");
+      //   ServerStatus.setText("Connected!");
+            ServerStatus = "Server Status: Connected!";
+            repaint();
          }
          catch (IOException e) 
          {
             //if unsuccessful
         e.printStackTrace();
-        ServerStatus.setText("Failed to connect! Try again?");
+       // ServerStatus.setText("Failed to connect! Try again?");
+           ServerStatus = "Server Status: Failed to Connect!";
+           repaint();
          }
     }
 
@@ -122,6 +128,8 @@ class Input extends JFrame implements KeyListener{
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
+
+        g.drawString(ServerStatus, 10, 100);
         
     
         System.out.println("draw");
