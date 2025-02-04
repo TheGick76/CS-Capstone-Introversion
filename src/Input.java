@@ -19,6 +19,7 @@ class Input extends JFrame implements KeyListener{
     //Initialize our sockets and viarables
     public String InputString = "";
 
+    //Temp
     //Creates our socket which will connect to the server
     public static Socket inputSocket = null;
 
