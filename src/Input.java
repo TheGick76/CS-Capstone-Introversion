@@ -26,9 +26,7 @@ class Input extends JFrame implements KeyListener{
     //How we will be sending our data
     public static DataOutputStream out = null;
 
-    //A label that will contain text that will have the status of the server connection
-  //  private static JLabel ServerStatus = new JLabel("Server Status: Unconnected");
-
+    //A string that will contain text that will have the status of the server connection
      private static String ServerStatus = "Server Status: Unconnected";
     
     //Images 
@@ -73,9 +71,6 @@ class Input extends JFrame implements KeyListener{
         setFocusTraversalKeysEnabled(false);
         //Adds Keylsitener to this instance
         addKeyListener(this);
-        //Sets alignment of where the text should appear
-    //    ServerStatus.setHorizontalAlignment(SwingConstants.LEFT);
-      //  ServerStatus.setVerticalAlignment(SwingConstants.TOP);
         //Add button
         JButton ServerConnectButton = new JButton("Connect");
         //Creates and adds a new action listener
@@ -93,8 +88,7 @@ class Input extends JFrame implements KeyListener{
         });
         //Stops the action lsitener from taking priority over the key listener
         ServerConnectButton.setFocusable(false);
-        //Addthing the text and button, with layout
-     //   add(ServerStatus);
+        //Adding the button with layout
         add(ServerConnectButton, BorderLayout.PAGE_END);
         //Sets window visible
         setVisible(true);
@@ -276,6 +270,16 @@ class Input extends JFrame implements KeyListener{
             repaint(PicPos[key][0],PicPos[key][1],100,100);
             keyPressed = '&';
     	  }
+          if(e.getKeyChar() == KeyEvent.VK_ESCAPE)
+          {
+           int result = JOptionPane.showConfirmDialog(this, "Quit?",
+               "Quit", JOptionPane.WARNING_MESSAGE);
+         if (result  == JOptionPane.YES_OPTION)
+           {
+            out.writeUTF("QUIT");
+            this.dispose();
+           }
+          }
         }
         catch (IOException i)
         {

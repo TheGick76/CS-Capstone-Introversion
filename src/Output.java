@@ -78,7 +78,7 @@ public static void main(String args[])
     public static void ReadInput(JFrame window)
     {
         //While the last input hasn't been an arbitrary close string
-        while(!outputString.equals("p"))
+        while(!outputString.equals("QUIT"))
         {
             //try to take in inputs from the socket
             try
