@@ -53,7 +53,15 @@ public static void main(String args[])
 
         //NEED TO MULTITHREAD
         //Constatnly reads input from the inputs proccess
-        ReadInput(window);
+
+        for (int i = 1 ; i <= 3 ; i++) {
+            Thread t = new Thread(new Timer(i)) ;
+            t.start() ;
+        }
+
+
+        Thread t1 = new Thread(window.new ReadInputThread(window)) ;
+        t1.start() ;
 
     }
     //Constructor for Output
@@ -155,5 +163,19 @@ public static void main(String args[])
                 }
         }
     }
+
+    public class ReadInputThread implements Runnable {
+
+        public JFrame window ;
+
+        public ReadInputThread(JFrame window) {
+            this.window = window ;
+        }
+
+        public void run() {
+            ReadInput(window) ;
+        }
+    }
+
 
 }
