@@ -181,6 +181,7 @@ public static void main(String args[])
                 }
         }
         outputString = "";
+        System.out.println("Client Disconnected!");
     }
 
 }
