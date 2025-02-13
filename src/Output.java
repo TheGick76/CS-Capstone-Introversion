@@ -21,6 +21,9 @@ class Output extends JFrame{
     
     //String that will be the last given input
     public static String LastInput = "";
+
+    //if client disconnected
+    public static Boolean creationBool = true;
     
 
 
@@ -30,11 +33,26 @@ public static void main(String args[])
         //Creates instance of Output, which is the window
         Output window = new Output();
 
+       //Try to Connect
+       do { 
+           Connect(window, creationBool);
+       } while (true);
+       
+
+    }
+
+    //Attempt to connect to client
+    public static void Connect(JFrame window, Boolean serverCreate)
+    {
         //Try to create server
         try
         {
+            if(creationBool)
+            {
             //Create server at arbitray port
             ss = new ServerSocket(1027);
+            creationBool = false;
+            }
 
             //Wait for a client to connect
             receiveingSocket = ss.accept();
@@ -54,8 +72,10 @@ public static void main(String args[])
         //NEED TO MULTITHREAD
         //Constatnly reads input from the inputs proccess
         ReadInput(window);
-
+        //If this gets disconnected redo
+        // receiveingSocket = ss.accept(); and associated code
     }
+
     //Constructor for Output
     public Output()
     {
@@ -152,8 +172,15 @@ public static void main(String args[])
                 catch(IOException i)
                 {
                     System.out.println(i);
+                    System.out.println("Client Disconnected!");
+                    outputString = "QUIT";
+                    in = null;
+                    receiveingSocket = null;
+                    //Connect(window, false);
+                   // creationBool = true;
                 }
         }
+        outputString = "";
     }
 
 }
