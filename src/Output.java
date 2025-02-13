@@ -53,15 +53,7 @@ public static void main(String args[])
 
         //NEED TO MULTITHREAD
         //Constatnly reads input from the inputs proccess
-
-        for (int i = 1 ; i <= 3 ; i++) {
-            Thread t = new Thread(new Timer(i)) ;
-            t.start() ;
-        }
-
-
-        Thread t1 = new Thread(window.new ReadInputThread(window)) ;
-        t1.start() ;
+        ReadInput(window);
 
     }
     //Constructor for Output
@@ -86,7 +78,7 @@ public static void main(String args[])
     public static void ReadInput(JFrame window)
     {
         //While the last input hasn't been an arbitrary close string
-        while(!outputString.equals("QUIT"))
+        while(!outputString.equals("p"))
         {
             //try to take in inputs from the socket
             try
@@ -163,19 +155,5 @@ public static void main(String args[])
                 }
         }
     }
-
-    public class ReadInputThread implements Runnable {
-
-        public JFrame window ;
-
-        public ReadInputThread(JFrame window) {
-            this.window = window ;
-        }
-
-        public void run() {
-            ReadInput(window) ;
-        }
-    }
-
 
 }
