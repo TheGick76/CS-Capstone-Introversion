@@ -30,18 +30,19 @@ class Input extends JFrame implements KeyListener{
      private static String ServerStatus = "Server Status: Unconnected";
     
     //Images 
-    private Image Image = new ImageIcon("R.jpg").getImage();
-    private Image CenterImage = new ImageIcon("Horse.jpg").getImage();
+    private final Image Image = new ImageIcon("R.jpg").getImage();
+    private final Image CenterImage = new ImageIcon("Horse.jpg").getImage();
     
     //For rendering the images and their offsets
-    private static float[] Render = {.25f,.25f,.25f,.25f}; 
-    private static int[][] PicPos = new int[4][2];	// X cord , Y cord
+    private final static float[] Render = {.25f,.25f,.25f,.25f}; 
+    private final static int[][] PicPos = new int[4][2];	// X cord , Y cord
     private static int key = 4;
     
     //Locking inputs
     private static boolean CanReInput= true;
     private static char keyPressed = '&';
     private static boolean CanRePaint = true;
+
 
     //Our main function
     public static void main(String args[])
@@ -74,18 +75,13 @@ class Input extends JFrame implements KeyListener{
         //Add button
         JButton ServerConnectButton = new JButton("Connect");
         //Creates and adds a new action listener
-        ServerConnectButton.addActionListener(new ActionListener(){
-
-            //Using this method as to not overload
-            //Key listner with if statements and bog it down anymore
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //When clicked try to connect
-                //Possible Connect(User Typed IP); For cross machine IPC
-                Connect();
-            }
-        });
+        ServerConnectButton.addActionListener((ActionEvent e) -> {
+            //When clicked try to connect
+            //Possible Connect(User Typed IP); For cross machine IPC
+            Connect();
+        } //Using this method as to not overload
+        //Key listner with if statements and bog it down anymore
+        );
         //Stops the action lsitener from taking priority over the key listener
         ServerConnectButton.setFocusable(false);
         //Adding the button with layout
@@ -110,9 +106,6 @@ class Input extends JFrame implements KeyListener{
          }
          catch (IOException e) 
          {
-            //if unsuccessful
-        e.printStackTrace();
-       // ServerStatus.setText("Failed to connect! Try again?");
            ServerStatus = "Server Status: Failed to Connect!";
            repaint();
          }

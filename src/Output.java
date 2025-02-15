@@ -24,6 +24,13 @@ class Output extends JFrame{
 
     //if client disconnected
     public static Boolean creationBool = true;
+
+    //Energy,Score,CurrentTilePosition,Row Position, Coloumn Position
+    public static Himothy player = new Himothy(1,0,0,0,0);
+
+    //Change assignment later
+    public static int Rows = 4;
+    public static int Cols = 4;
     
 
 
@@ -32,6 +39,8 @@ public static void main(String args[])
     {
         //Creates instance of Output, which is the window
         Output window = new Output();
+
+        Display(window, 1);
 
        //Try to Connect
        do { 
@@ -60,6 +69,8 @@ public static void main(String args[])
             //Confirming client has connected
             System.out.println("Client joined");
 
+            System.out.println("row " + player.rowPos +" col " + player.colPos);
+
             //Will direct flow of inputs from the server's spcket
             in = new DataInputStream(new BufferedInputStream(receiveingSocket.getInputStream()));
         }
@@ -77,6 +88,7 @@ public static void main(String args[])
     }
 
     //Constructor for Output
+    //Frame stuff
     public Output()
     {
         //Sets the title of the window
@@ -87,6 +99,13 @@ public static void main(String args[])
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //sets sizze of window
         setSize(500,500);
+        //set layoutmananager
+        setLayout(new GridLayout(Rows,Cols));
+        //Add tile panels
+        for(int i = 0; i < (Rows * Cols); i++)
+        {
+            add(new JPanel(), i);
+        }
         //sets window 10px off the top right corner
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize(); 
         setLocation(dim.width - getSize().width - 10, 10);
@@ -110,49 +129,51 @@ public static void main(String args[])
                     //Basic logic to prove inputs
                     switch(outputString)
                     {
-                        //If input "w"
-                    	case "w":
+                    	case "w" -> {
                             //To make sure we don't over take inputs, make sure we only take the input again when released
-                    		if(LastInput.compareTo("w") !=0) 
-                    		{
-                    			window.getContentPane().setBackground(Color.BLUE);
-                    			System.out.println(outputString);		
-                    		}
-                        break;
-                        
-                    	case "a":
-                        //To make sure we don't over take inputs, make sure we only take the input again when released
-                    		if(LastInput.compareTo("a") !=0) 
-                    		{
-                    			window.getContentPane().setBackground(Color.RED);
-                    			System.out.println(outputString);		
-                    		}
-                        break;
-                        
-                    	case "s":
-                        //To make sure we don't over take inputs, make sure we only take the input again when released
-                    		if(LastInput.compareTo("s") !=0) 
-                    		{
-                    			window.getContentPane().setBackground(Color.YELLOW);
-                    			System.out.println(outputString);		
-                    		}
-                        break;
-                        
-                    	case "d":
-                        //To make sure we don't over take inputs, make sure we only take the input again when released
-                    		if(LastInput.compareTo("d") !=0) 
-                    		{
-                    			window.getContentPane().setBackground(Color.GREEN);
-                    			System.out.println(outputString);		
-                    		}
-                    	break;
-                    	
-                    	case "CLEAR":
-                        //If a button has been released
-                			window.getContentPane().setBackground(Color.WHITE);
-                			System.out.println(outputString);
-                        break;
+                            if(LastInput.compareTo("w") !=0)
+                            {
+                                //window.getContentPane().setBackground(Color.BLUE); 
+                                MovementLogic(outputString, window);
+                                System.out.println(outputString);
+                            }
                     }
+                        
+                    	case "a" -> {
+                            //To make sure we don't over take inputs, make sure we only take the input again when released
+                            if(LastInput.compareTo("a") !=0)
+                            {
+                                //window.getContentPane().setBackground(Color.RED);
+                                MovementLogic(outputString, window);
+                                System.out.println(outputString);
+                            }
+                    }
+                        
+                    	case "s" -> {
+                            //To make sure we don't over take inputs, make sure we only take the input again when released
+                            if(LastInput.compareTo("s") !=0)
+                            {
+                                //	window.getContentPane().setBackground(Color.YELLOW);
+                                MovementLogic(outputString, window);
+                                System.out.println(outputString);
+                            }
+                    }
+                        
+                    	case "d" -> {
+                            //To make sure we don't over take inputs, make sure we only take the input again when released
+                            if(LastInput.compareTo("d") !=0)
+                            {
+                                //window.getContentPane().setBackground(Color.GREEN);
+                                MovementLogic(outputString, window);
+                                System.out.println(outputString);
+                            }
+                    }
+                    	
+                    	case "CLEAR" -> //If a button has been released
+                		//	window.getContentPane().setBackground(Color.WHITE);
+                			System.out.println(outputString);
+                    }
+                //If input "w"
                     
  /*                   
                     if(outputString.equals("w") && LastInput.compareTo("w") !=0)
@@ -184,4 +205,66 @@ public static void main(String args[])
         System.out.println("Client Disconnected!");
     }
 
+    public static void Display(JFrame window, int oldPos)
+    {
+       window.getContentPane().getComponent(oldPos).setBackground(Color.WHITE);
+       window.getContentPane().getComponent(player.currentTilePosition).setBackground(Color.RED);
+    }
+
+    //Moves around where the player is on the board
+    public static void MovementLogic(String input, JFrame window)
+    {
+        int oldPos;
+
+        switch(input){
+
+        case("w") -> {
+            if(player.rowPos != 0)
+            {
+                player.rowPos -= 1;
+                //Current pos -= length of rows
+                oldPos = player.currentTilePosition;
+                player.currentTilePosition -= Rows + (Cols - Rows);
+                System.out.println("row " + player.rowPos +" col " + player.colPos);
+                Display(window,oldPos);
+            }
+            }
+
+         case("a") -> {
+             //window.getContentPane().setBackground(Color.RED);
+             if(player.colPos != 0)
+             {
+                 player.colPos -= 1;
+                 oldPos = player.currentTilePosition;
+                 player.currentTilePosition -= 1;
+                 System.out.println("row " + player.rowPos +" col " + player.colPos);
+                 Display(window, oldPos);
+             }
+            }
+
+         case("s") -> {
+             if(player.rowPos != Rows - 1)
+             {
+                 player.rowPos += 1;
+                 oldPos = player.currentTilePosition;
+                 player.currentTilePosition += Rows + (Cols - Rows);
+                 System.out.println("row " + player.rowPos +" col " + player.colPos);
+                 Display(window,oldPos);
+             }
+            }
+
+         case("d") -> {
+             if(player.colPos != Cols - 1)
+             {
+                 player.colPos += 1;
+                 oldPos = player.currentTilePosition;
+                 player.currentTilePosition += 1;
+                 System.out.println("row " + player.rowPos +" col " + player.colPos);
+                 Display(window,oldPos);
+             }
+            }
+
+
+        }
+    }
 }
