@@ -105,15 +105,16 @@ public static void main(String args[])
         //set layoutmananager
         setLayout(new GridLayout(Rows,Cols));
         //Add tile panels
+        //Initializes placements and colors, make seperate function?
         for(int i = 0; i < (Rows * Cols); i++)
         {
             JPanel temp = new JPanel();
             add(temp, i);
-            if(board.BoardTiles[i].tileType == "PERSON")
+            if(board.BoardTiles[i].tileType.equals("PERSON"))
             {
                 temp.setBackground(Color.ORANGE);
             }
-            else if(board.BoardTiles[i].tileType == "CAT")
+            else if(board.BoardTiles[i].tileType.equals("CAT"))
             {
                 temp.setBackground(Color.GREEN);
             }
@@ -224,7 +225,15 @@ public static void main(String args[])
 
     public static void Display(JFrame window, int oldPos)
     {
-       window.getContentPane().getComponent(oldPos).setBackground(Color.WHITE);
+       if(board.BoardTiles[oldPos].tileType.equals("PERSON"))
+       {
+            window.getContentPane().getComponent(oldPos).setBackground(Color.ORANGE);
+       }
+       else
+       {
+        window.getContentPane().getComponent(oldPos).setBackground(Color.WHITE);
+       }
+
        window.getContentPane().getComponent(player.currentTilePosition).setBackground(Color.RED);
     }
 
