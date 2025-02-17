@@ -68,7 +68,7 @@ class Input extends JFrame implements KeyListener{
         //sets window 10px off the top left corner
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize(); 
         setLocation(10, 10);
-        //Key inputs are sent to this window when focused
+        //Key inputs are sent to this window when f/ocused
         setFocusTraversalKeysEnabled(false);
         //Adds Keylsitener to this instance
         addKeyListener(this);

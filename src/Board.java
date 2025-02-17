@@ -2,29 +2,36 @@ public class Board {
 
     public static int Rows = 4;
     public static int Cols = 4;
-    
+    public static Tiles[] BoardTiles = new Tiles[Rows * Cols];
 
-    public static void main(String[] args) {
+    Board(int Rows, int Cols)
+    {
+        Board.Rows = Rows;
+        Board.Cols = Cols;
 
-        int TileCount = 1;
+        BoardTiles = new Tiles[Rows * Cols];
 
-        Tiles[][] BoardTiles = new Tiles[2][2];
+        int TileCount = 0;
+
+        
         //Creats an array of tile objects
-        for(int i = 0; i < 2 ; i++) {
-            for(int j = 0; j< 2; j++){
-                if(i != 1 && j != 1)
-                BoardTiles[i][j] = new Tiles(TileCount, "EMPTY");
-                else
-                BoardTiles[i][j] = new Tiles(TileCount, "CAT");
-
+        for(int i = 0; i < (Rows * Cols) ; i++) 
+        {
+            if(i == 3)
+            {
+            BoardTiles[i] = new Tiles(TileCount, "CAT");
+            }
+            else if(i == 6)
+            {BoardTiles[i] = new Tiles(TileCount, "PERSON");}
+            else
+            {BoardTiles[i] = new Tiles(TileCount, "EMPTY");}
                 TileCount++;
-        }
+       }
+    System.out.println(BoardTiles[3].tileType);
+    System.out.println(BoardTiles[3].tileNumber);
+    System.out.println(BoardTiles[6].tileType);
+    System.out.println(BoardTiles[6].tileNumber);
     }
-    System.out.println(BoardTiles[0][0].tileType);
-    System.out.println(BoardTiles[0][0].tileNumber);
-    System.out.println(BoardTiles[1][1].tileType);
-    System.out.println(BoardTiles[1][1].tileNumber);
 
-    }
 }
 

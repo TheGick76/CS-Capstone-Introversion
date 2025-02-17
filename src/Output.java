@@ -28,9 +28,12 @@ class Output extends JFrame{
     //Energy,Score,CurrentTilePosition,Row Position, Coloumn Position
     public static Himothy player = new Himothy(1,0,0,0,0);
 
-    //Change assignment later
-    public static int Rows = 4;
-    public static int Cols = 4;
+    //Board
+    public static Board board = new Board(4,4);
+
+    //Change how these are assigned later
+    public static int Rows = Board.Rows;
+    public static int Cols = Board.Cols;
     
 
 
@@ -40,7 +43,7 @@ public static void main(String args[])
         //Creates instance of Output, which is the window
         Output window = new Output();
 
-        Display(window, 1);
+        Display(window, 0);
 
        //Try to Connect
        do { 
@@ -104,7 +107,21 @@ public static void main(String args[])
         //Add tile panels
         for(int i = 0; i < (Rows * Cols); i++)
         {
-            add(new JPanel(), i);
+            JPanel temp = new JPanel();
+            add(temp, i);
+            if(board.BoardTiles[i].tileType == "PERSON")
+            {
+                temp.setBackground(Color.ORANGE);
+            }
+            else if(board.BoardTiles[i].tileType == "CAT")
+            {
+                temp.setBackground(Color.GREEN);
+            }
+            else
+            {
+                temp.setBackground(Color.WHITE);
+            }
+
         }
         //sets window 10px off the top right corner
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize(); 
