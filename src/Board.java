@@ -28,10 +28,6 @@ public class Board {
             {BoardTiles[i] = new Tiles(TileCount, "EMPTY");}
                 TileCount++;
        }
-    System.out.println(BoardTiles[3].tileType);
-    System.out.println(BoardTiles[3].tileNumber);
-    System.out.println(BoardTiles[6].tileType);
-    System.out.println(BoardTiles[6].tileNumber);
     }
 
 }

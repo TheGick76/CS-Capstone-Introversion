@@ -221,7 +221,7 @@ class Input extends JFrame implements KeyListener{
         try
         {
         	//Only reads desired inputs, turns all other inputs to '&'
-          if(e.getKeyChar()=='w'||e.getKeyChar()=='a'||e.getKeyChar()=='s'||e.getKeyChar()=='d'||e.getKeyChar()=='p')
+          if(e.getKeyChar()=='w'||e.getKeyChar()=='a'||e.getKeyChar()=='s'||e.getKeyChar()=='d')
           {
         	  if(CanReInput)
         	  {
