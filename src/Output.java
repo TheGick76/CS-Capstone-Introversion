@@ -43,10 +43,13 @@ public static void main(String args[])
         //Creates instance of Output, which is the window
         Output window = new Output();
 
+        //Initialize display
         Display(window, 0);
 
        //Try to Connect
        do { 
+        //This loop actually wont constantly go while we are connected or searching,
+        //it is only allowed to go when Connect(); finishes
            Connect(window, creationBool);
        } while (true);
        
@@ -54,11 +57,13 @@ public static void main(String args[])
     }
 
     //Attempt to connect to client
+    //This function is called once on start and then again on disconnections due to loop in main
     public static void Connect(JFrame window, Boolean serverCreate)
     {
         //Try to create server
         try
         {
+            //If its the first time the server is being created
             if(creationBool)
             {
             //Create server at arbitray port
@@ -86,8 +91,6 @@ public static void main(String args[])
         //NEED TO MULTITHREAD
         //Constatnly reads input from the inputs proccess
         ReadInput(window);
-        //If this gets disconnected redo
-        // receiveingSocket = ss.accept(); and associated code
     }
 
     //Constructor for Output
@@ -105,22 +108,15 @@ public static void main(String args[])
         //set layoutmananager
         setLayout(new GridLayout(Rows,Cols));
         //Add tile panels
-        //Initializes placements and colors, make seperate function?
+        //Initializes colors of the tiles, make seperate function?
         for(int i = 0; i < (Rows * Cols); i++)
         {
             JPanel temp = new JPanel();
             add(temp, i);
-            if(board.BoardTiles[i].tileType.equals("PERSON"))
-            {
-                temp.setBackground(Color.ORANGE);
-            }
-            else if(board.BoardTiles[i].tileType.equals("CAT"))
-            {
-                temp.setBackground(Color.GREEN);
-            }
-            else
-            {
-                temp.setBackground(Color.WHITE);
+            switch (board.BoardTiles[i].tileType) {
+                case "PERSON" -> temp.setBackground(Color.ORANGE);
+                case "CAT" -> temp.setBackground(Color.GREEN);
+                default -> temp.setBackground(Color.WHITE);
             }
 
         }
@@ -132,6 +128,7 @@ public static void main(String args[])
     }
     
     //Make multithread later
+    //Read inputs from client
     public static void ReadInput(JFrame window)
     {
         //While the last input hasn't been an arbitrary close string
@@ -151,7 +148,7 @@ public static void main(String args[])
                             //To make sure we don't over take inputs, make sure we only take the input again when released
                             if(LastInput.compareTo("w") !=0)
                             {
-                                //window.getContentPane().setBackground(Color.BLUE); 
+                               //Do correct logic
                                 MovementLogic(outputString, window);
                                 System.out.println(outputString);
                             }
@@ -161,7 +158,6 @@ public static void main(String args[])
                             //To make sure we don't over take inputs, make sure we only take the input again when released
                             if(LastInput.compareTo("a") !=0)
                             {
-                                //window.getContentPane().setBackground(Color.RED);
                                 MovementLogic(outputString, window);
                                 System.out.println(outputString);
                             }
@@ -171,7 +167,6 @@ public static void main(String args[])
                             //To make sure we don't over take inputs, make sure we only take the input again when released
                             if(LastInput.compareTo("s") !=0)
                             {
-                                //	window.getContentPane().setBackground(Color.YELLOW);
                                 MovementLogic(outputString, window);
                                 System.out.println(outputString);
                             }
@@ -181,29 +176,15 @@ public static void main(String args[])
                             //To make sure we don't over take inputs, make sure we only take the input again when released
                             if(LastInput.compareTo("d") !=0)
                             {
-                                //window.getContentPane().setBackground(Color.GREEN);
                                 MovementLogic(outputString, window);
                                 System.out.println(outputString);
                             }
                     }
                     	
                     	case "CLEAR" -> //If a button has been released
-                		//	window.getContentPane().setBackground(Color.WHITE);
                 			System.out.println(outputString);
                     }
-                //If input "w"
-                    
- /*                   
-                    if(outputString.equals("w") && LastInput.compareTo("w") !=0)
-                    {
-                        window.getContentPane().setBackground(Color.BLUE);
-                        System.out.println(outputString);
-                    }
-                    else
-                    {
-                        window.getContentPane().setBackground(Color.WHITE);
-                    }
-*/             
+
                  //Store what the last input was to make sure we dont over take
                   LastInput = outputString;
                 }
@@ -213,28 +194,40 @@ public static void main(String args[])
                     System.out.println(i);
                     System.out.println("Client Disconnected!");
                     outputString = "QUIT";
+                    //Clear our data input stream
                     in = null;
+                    //clear our recieving socket
                     receiveingSocket = null;
-                    //Connect(window, false);
-                   // creationBool = true;
                 }
         }
         outputString = "";
         System.out.println("Client Disconnected!");
     }
 
+    //Function updates visible tiles on movement
     public static void Display(JFrame window, int oldPos)
     {
-       if(board.BoardTiles[oldPos].tileType.equals("PERSON"))
-       {
-            window.getContentPane().getComponent(oldPos).setBackground(Color.ORANGE);
-       }
-       else
-       {
-        window.getContentPane().getComponent(oldPos).setBackground(Color.WHITE);
-       }
-
+        //tiles that are NOT the player
+        switch (board.BoardTiles[oldPos].tileType) {
+            case "PERSON" -> window.getContentPane().getComponent(oldPos).setBackground(Color.ORANGE);
+            case "CAT" -> {
+                window.getContentPane().getComponent(oldPos).setBackground(Color.WHITE);
+                board.BoardTiles[oldPos].tileType = "EMPTY";
+            }
+            default -> window.getContentPane().getComponent(oldPos).setBackground(Color.WHITE);
+        }
+       //The Player
        window.getContentPane().getComponent(player.currentTilePosition).setBackground(Color.RED);
+    }
+
+    //Function for doing what the current tile action is
+    //Probably where the most multithreading interactions will happen
+    public static void CurrentTileAction()
+    {
+        if(board.BoardTiles[player.currentTilePosition].tileType.equals("CAT"))
+        {
+             player.score += 1;
+        }  
     }
 
     //Moves around where the player is on the board
@@ -242,17 +235,26 @@ public static void main(String args[])
     {
         int oldPos;
 
+        //Take input
         switch(input){
-
+            //Input given was "w", we want our player to move up a row
         case("w") -> {
+            //If we are not at the top row
             if(player.rowPos != 0)
             {
+                //Top row 0, last row n. move to row 1-n 
                 player.rowPos -= 1;
-                //Current pos -= length of rows
+                //Save the tile position for graphical updates and such
                 oldPos = player.currentTilePosition;
+                //change the offical tile position of the player
+                //Current position - how many rows there are + offset of coloumns (In a 4 by 4 square you just subtract 4)
                 player.currentTilePosition -= Rows + (Cols - Rows);
+                //Print statement for testing, feel free to delete later
                 System.out.println("row " + player.rowPos +" col " + player.colPos);
+                //Send a refrence to our window so we can visually update the tile we moved to and mvoed away from
                 Display(window,oldPos);
+                //Do the current tile action
+                CurrentTileAction();
             }
             }
 
@@ -265,6 +267,7 @@ public static void main(String args[])
                  player.currentTilePosition -= 1;
                  System.out.println("row " + player.rowPos +" col " + player.colPos);
                  Display(window, oldPos);
+                 CurrentTileAction();
              }
             }
 
@@ -275,7 +278,9 @@ public static void main(String args[])
                  oldPos = player.currentTilePosition;
                  player.currentTilePosition += Rows + (Cols - Rows);
                  System.out.println("row " + player.rowPos +" col " + player.colPos);
+                 System.out.println("Score: " + player.score);
                  Display(window,oldPos);
+                 CurrentTileAction();
              }
             }
 
@@ -287,6 +292,7 @@ public static void main(String args[])
                  player.currentTilePosition += 1;
                  System.out.println("row " + player.rowPos +" col " + player.colPos);
                  Display(window,oldPos);
+                 CurrentTileAction();
              }
             }
 

@@ -15,6 +15,7 @@ public class Board {
 
         
         //Creats an array of tile objects
+        //Initalizes what tiles are which
         for(int i = 0; i < (Rows * Cols) ; i++) 
         {
             if(i == 3)

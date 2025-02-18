@@ -18,7 +18,4 @@ public class Himothy {
         this.rowPos = rowPos;
         this.colPos = colPos;
     }
-
-
-
 }
