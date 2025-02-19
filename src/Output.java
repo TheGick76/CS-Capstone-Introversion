@@ -43,6 +43,7 @@ class Output extends JFrame{
 
     //The label that will display the current time, will send to Timer class
     public static JLabel TimerDisplay = new JLabel("Timer: ");
+    public static JLabel CountdownDisplay = new JLabel("Countdown: ");
     
 
 
@@ -57,7 +58,9 @@ public static void main(String args[])
 
         //Thread for timer
         Thread timerThread = new Thread(new Timer(0, TimerDisplay));
+        Thread countdownThread = new Thread(new Countdown(0, 300, CountdownDisplay));
         timerThread.start();
+        countdownThread.start();
 
        //Try to Connect
        do { 
@@ -137,6 +140,9 @@ public static void main(String args[])
         TimerDisplay.setSize(100,100);
       //  TimerDisplay.setBounds(600, 100,100,100);
         statsPanel.add(TimerDisplay);
+
+        CountdownDisplay.setSize(100,100);
+        statsPanel.add(CountdownDisplay);
 
         //Add tile panels
         //Initializes colors of the tiles, make seperate function?
