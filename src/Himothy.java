@@ -18,4 +18,14 @@ public class Himothy {
         this.rowPos = rowPos;
         this.colPos = colPos;
     }
+
+
+    public void EnergyDown()
+    {
+
+    //while forever
+     // if(on perosn tile)  
+     //energy -= 1;
+     
+    }
 }

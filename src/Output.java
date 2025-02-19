@@ -7,6 +7,9 @@ import javax.swing.*;
 //Class of Output whichextends the content of JFrame
 class Output extends JFrame{
 
+    //Go through and reprivate all these things, they shouldn't be public
+    //Id do it but im so lazy - Josh
+
     //Create a socket that will then be connected to server
     public static Socket receiveingSocket = null;
 
@@ -28,12 +31,17 @@ class Output extends JFrame{
     //Energy,Score,CurrentTilePosition,Row Position, Coloumn Position
     public static Himothy player = new Himothy(1,0,0,0,0);
 
-    //Board
+    //Board Container
+    public static JPanel BoardContainer = new JPanel();
+
+    //Board initializer
     public static Board board = new Board(4,4);
 
     //Change how these are assigned later
     public static int Rows = Board.Rows;
     public static int Cols = Board.Cols;
+
+    public static JLabel TimerDisplay = new JLabel("Time: ");
     
 
 
@@ -46,13 +54,16 @@ public static void main(String args[])
         //Initialize display
         Display(window, 0);
 
+        //Thread for timer
+        Thread timerThread = new Thread(new Timer(0, TimerDisplay));
+        timerThread.start();
+
        //Try to Connect
        do { 
         //This loop actually wont constantly go while we are connected or searching,
         //it is only allowed to go when Connect(); finishes
            Connect(window, creationBool);
-       } while (true);
-       
+       } while (true); 
 
     }
 
@@ -104,15 +115,27 @@ public static void main(String args[])
         //Closes program when window is closed
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //sets sizze of window
-        setSize(500,500);
+        setSize(800,539);
         //set layoutmananager
-        setLayout(new GridLayout(Rows,Cols));
+        //setLayout(new GridLayout(1,2));
+        setLayout(null);
+
+        //Boardcontainer initializization
+        BoardContainer.setSize(500,500);
+        BoardContainer.setLayout(new GridLayout(Rows,Cols));
+        add(BoardContainer);
+
+        //Timer display
+        TimerDisplay.setSize(100,100);
+        TimerDisplay.setBounds(600, 100,100,100);
+        add(TimerDisplay);
+
         //Add tile panels
         //Initializes colors of the tiles, make seperate function?
         for(int i = 0; i < (Rows * Cols); i++)
         {
             JPanel temp = new JPanel();
-            add(temp, i);
+            BoardContainer.add(temp, i);
             switch (board.BoardTiles[i].tileType) {
                 case "PERSON" -> temp.setBackground(Color.ORANGE);
                 case "CAT" -> temp.setBackground(Color.GREEN);
@@ -209,15 +232,15 @@ public static void main(String args[])
     {
         //tiles that are NOT the player
         switch (board.BoardTiles[oldPos].tileType) {
-            case "PERSON" -> window.getContentPane().getComponent(oldPos).setBackground(Color.ORANGE);
+            case "PERSON" -> BoardContainer.getComponent(oldPos).setBackground(Color.ORANGE);
             case "CAT" -> {
-                window.getContentPane().getComponent(oldPos).setBackground(Color.WHITE);
+                BoardContainer.getComponent(oldPos).setBackground(Color.WHITE);
                 board.BoardTiles[oldPos].tileType = "EMPTY";
             }
-            default -> window.getContentPane().getComponent(oldPos).setBackground(Color.WHITE);
+            default -> BoardContainer.getComponent(oldPos).setBackground(Color.WHITE);
         }
        //The Player
-       window.getContentPane().getComponent(player.currentTilePosition).setBackground(Color.RED);
+       BoardContainer.getComponent(player.currentTilePosition).setBackground(Color.RED);
     }
 
     //Function for doing what the current tile action is

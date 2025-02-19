@@ -1,9 +1,12 @@
+import javax.swing.*;
 public class Timer implements Runnable {
 
     public int threadNum ;
+    public JLabel timerDisplay;
 
-    public Timer(int i) {
+    public Timer(int i, JLabel timerDisplay) {
         this.threadNum = i ;
+        this.timerDisplay = timerDisplay;
     }
 
     public void run() {
@@ -16,6 +19,7 @@ public class Timer implements Runnable {
                 System.out.println(e);
             }
             i++ ;
+            timerDisplay.setText("Timer: " + i);
         }
     }
 }
