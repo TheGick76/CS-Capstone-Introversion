@@ -41,7 +41,8 @@ class Output extends JFrame{
     public static int Rows = Board.Rows;
     public static int Cols = Board.Cols;
 
-    public static JLabel TimerDisplay = new JLabel("Time: ");
+    //The label that will display the current time, will send to Timer class
+    public static JLabel TimerDisplay = new JLabel("Timer: ");
     
 
 
@@ -115,20 +116,27 @@ public static void main(String args[])
         //Closes program when window is closed
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //sets sizze of window
+        //Hieght 539 becuase thats the size that does not cut off the board.... for some reason
         setSize(800,539);
         //set layoutmananager
-        //setLayout(new GridLayout(1,2));
-        setLayout(null);
+        setLayout(new FlowLayout(FlowLayout.LEADING));
+        //setLayout(null);
 
         //Boardcontainer initializization
-        BoardContainer.setSize(500,500);
+        BoardContainer.setPreferredSize(new Dimension(500,500));
         BoardContainer.setLayout(new GridLayout(Rows,Cols));
         add(BoardContainer);
 
+        JPanel statsPanel = new JPanel();
+        statsPanel.setPreferredSize(new Dimension(300,500));
+        add(statsPanel);
+
+        pack();
+
         //Timer display
         TimerDisplay.setSize(100,100);
-        TimerDisplay.setBounds(600, 100,100,100);
-        add(TimerDisplay);
+      //  TimerDisplay.setBounds(600, 100,100,100);
+        statsPanel.add(TimerDisplay);
 
         //Add tile panels
         //Initializes colors of the tiles, make seperate function?
