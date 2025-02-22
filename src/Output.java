@@ -56,17 +56,16 @@ public static void main(String args[])
         //Initialize display
         Display(window, 0);
 
-        //Thread for timer
-        Thread timerThread = new Thread(new Timer(0, TimerDisplay));
-        Thread countdownThread = new Thread(new Countdown(0, 300, CountdownDisplay));
-        timerThread.start();
-        countdownThread.start();
-
        //Try to Connect
        do { 
         //This loop actually wont constantly go while we are connected or searching,
         //it is only allowed to go when Connect(); finishes
            Connect(window, creationBool);
+        //Thread for timer
+        Thread timerThread = new Thread(new Timer(0, TimerDisplay));
+        Thread countdownThread = new Thread(new Countdown(0, 300, CountdownDisplay));
+        timerThread.start();
+        countdownThread.start();
        } while (true); 
 
     }
