@@ -61,11 +61,6 @@ public static void main(String args[])
         //This loop actually wont constantly go while we are connected or searching,
         //it is only allowed to go when Connect(); finishes
            Connect(window, creationBool);
-        //Thread for timer
-        Thread timerThread = new Thread(new Timer(0, TimerDisplay));
-        Thread countdownThread = new Thread(new Countdown(0, 300, CountdownDisplay));
-        timerThread.start();
-        countdownThread.start();
        } while (true); 
 
     }
@@ -87,6 +82,12 @@ public static void main(String args[])
 
             //Wait for a client to connect
             receiveingSocket = ss.accept();
+
+        //Thread for timer
+        Thread timerThread = new Thread(new Timer(0, TimerDisplay));
+        Thread countdownThread = new Thread(new Countdown(0, 300, CountdownDisplay));
+        timerThread.start();
+        countdownThread.start();
 
             //Confirming client has connected
             System.out.println("Client joined");
