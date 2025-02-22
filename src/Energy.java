@@ -52,6 +52,13 @@ public class Energy implements Runnable {
             // change energy based on standard energy change and extra energy change amounts
             currentEnergy -= (baseEnergyChange + extraEnergyChange) ;
 
+            if (currentEnergy > energy.getMaximum()){
+                currentEnergy = energy.getMaximum() ;
+            }
+            if (currentEnergy < energy.getMinimum()){
+                currentEnergy = energy.getMinimum() ;
+            }
+
             energy.setValue(currentEnergy) ;
 
         }
