@@ -44,6 +44,7 @@ class Output extends JFrame{
     //The label that will display the current time, will send to Timer class
     public static JLabel TimerDisplay = new JLabel("Timer: ");
     public static JLabel CountdownDisplay = new JLabel("Countdown: ");
+    public static JProgressBar EnergyBar = new JProgressBar();
     
 
 
@@ -88,6 +89,9 @@ public static void main(String args[])
         Thread countdownThread = new Thread(new Countdown(0, 300, CountdownDisplay));
         timerThread.start();
         countdownThread.start();
+
+        Thread Energy = new Thread(new Energy(player, board, EnergyBar)) ;
+        Energy.start() ;
 
             //Confirming client has connected
             System.out.println("Client joined");
@@ -144,7 +148,6 @@ public static void main(String args[])
         CountdownDisplay.setSize(100,100);
         statsPanel.add(CountdownDisplay);
 
-        JProgressBar EnergyBar = new JProgressBar();
         EnergyBar.setMaximum(100);
         EnergyBar.setValue(100);
         EnergyBar.setString("Energy");
