@@ -138,11 +138,25 @@ public static void main(String args[])
 
         //Timer display
         TimerDisplay.setSize(100,100);
-      //  TimerDisplay.setBounds(600, 100,100,100);
+        //TimerDisplay.setBounds(10, 100,100,100);
         statsPanel.add(TimerDisplay);
 
         CountdownDisplay.setSize(100,100);
         statsPanel.add(CountdownDisplay);
+
+        JProgressBar EnergyBar = new JProgressBar();
+        EnergyBar.setMaximum(100);
+        EnergyBar.setValue(100);
+        EnergyBar.setString("Energy");
+        EnergyBar.setStringPainted(true);
+
+        EnergyBar.setSize(200,100);
+       // EnergyBar.setBounds(200, 100, 100,100);
+
+       statsPanel.add(new JPanel());
+       statsPanel.add(new JPanel());
+
+        statsPanel.add(EnergyBar);
 
         //Add tile panels
         //Initializes colors of the tiles, make seperate function?
