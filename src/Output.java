@@ -255,71 +255,8 @@ public static void main(String args[])
     //Moves around where the player is on the board
     public static void MovementLogic(String input, JFrame window)
     {
-        int oldPos;
-
-        //Take input
-        switch(input){
-            //Input given was "w", we want our player to move up a row
-        case("w") -> {
-            //If we are not at the top row
-            if(player.rowPos != 0)
-            {
-                //Top row 0, last row n. move to row 1-n 
-                player.rowPos -= 1;
-                //Save the tile position for graphical updates and such
-                oldPos = player.currentTilePosition;
-                //change the offical tile position of the player
-                //Current position - how many rows there are + offset of coloumns (In a 4 by 4 square you just subtract 4)
-                player.currentTilePosition -= Rows + (Cols - Rows);
-                //Print statement for testing, feel free to delete later
-                System.out.println("row " + player.rowPos +" col " + player.colPos);
-                //Send a refrence to our window so we can visually update the tile we moved to and mvoed away from
-                Display(window,oldPos);
-                //Do the current tile action
-                CurrentTileAction();
-            }
-            }
-
-         case("a") -> {
-             //window.getContentPane().setBackground(Color.RED);
-             if(player.colPos != 0)
-             {
-                 player.colPos -= 1;
-                 oldPos = player.currentTilePosition;
-                 player.currentTilePosition -= 1;
-                 System.out.println("row " + player.rowPos +" col " + player.colPos);
-                 Display(window, oldPos);
-                 CurrentTileAction();
-             }
-            }
-
-         case("s") -> {
-             if(player.rowPos != Rows - 1)
-             {
-                 player.rowPos += 1;
-                 oldPos = player.currentTilePosition;
-                 player.currentTilePosition += Rows + (Cols - Rows);
-                 System.out.println("row " + player.rowPos +" col " + player.colPos);
-                 System.out.println("Score: " + player.score);
-                 Display(window,oldPos);
-                 CurrentTileAction();
-             }
-            }
-
-         case("d") -> {
-             if(player.colPos != Cols - 1)
-             {
-                 player.colPos += 1;
-                 oldPos = player.currentTilePosition;
-                 player.currentTilePosition += 1;
-                 System.out.println("row " + player.rowPos +" col " + player.colPos);
-                 Display(window,oldPos);
-                 CurrentTileAction();
-             }
-            }
-
-
-        }
+        Display(window,player.MovementLogic(input, board));
+        CurrentTileAction();
     }
     
     
