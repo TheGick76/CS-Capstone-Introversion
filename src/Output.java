@@ -21,21 +21,19 @@ class Output extends JFrame{
 
     //Will be changed to what key / string was sent from inputs
     public static String outputString = "";
-    
-    //String that will be the last given input
-    public static String LastInput = "";
 
     //if client disconnected
     public static Boolean creationBool = true;
 
     //Energy,Score,CurrentTilePosition,Row Position, Coloumn Position
     public static Himothy player = new Himothy(1,0,0,0,0);
+    
 
     //Board Container
     public static JPanel BoardContainer = new JPanel();
 
     //Board initializer
-    public static Board board = new Board(4,4);
+    public static Board board = new Board(4,4,"GAME");
 
     //Change how these are assigned later
     public static int Rows = Board.Rows;
@@ -170,6 +168,7 @@ public static void main(String args[])
             switch (board.BoardTiles[i].tileType) {
                 case "PERSON" -> temp.setBackground(Color.ORANGE);
                 case "CAT" -> temp.setBackground(Color.GREEN);
+                case "POPUP" -> temp.setBackground(Color.cyan);
                 default -> temp.setBackground(Color.WHITE);
             }
 
@@ -181,7 +180,6 @@ public static void main(String args[])
         setVisible(true);
     }
     
-    //Make multithread later
     //Read inputs from client
     public static void ReadInput(JFrame window)
     {
@@ -198,49 +196,18 @@ public static void main(String args[])
                     //Basic logic to prove inputs
                     switch(outputString)
                     {
-                    	case "w" -> {
-                            //To make sure we don't over take inputs, make sure we only take the input again when released
-                            if(LastInput.compareTo("w") !=0)
-                            {
-                               //Do correct logic
-                                MovementLogic(outputString, window);
-                                System.out.println(outputString);
-                            }
-                    }
-                        
-                    	case "a" -> {
-                            //To make sure we don't over take inputs, make sure we only take the input again when released
-                            if(LastInput.compareTo("a") !=0)
-                            {
-                                MovementLogic(outputString, window);
-                                System.out.println(outputString);
-                            }
-                    }
-                        
-                    	case "s" -> {
-                            //To make sure we don't over take inputs, make sure we only take the input again when released
-                            if(LastInput.compareTo("s") !=0)
-                            {
-                                MovementLogic(outputString, window);
-                                System.out.println(outputString);
-                            }
-                    }
-                        
-                    	case "d" -> {
-                            //To make sure we don't over take inputs, make sure we only take the input again when released
-                            if(LastInput.compareTo("d") !=0)
-                            {
-                                MovementLogic(outputString, window);
-                                System.out.println(outputString);
-                            }
-                    }
+                    	// Movement Function
+                    	case "w" -> {MovementLogic(outputString, window);}
+                    	case "a" -> {MovementLogic(outputString, window);}
+                    	case "s" -> {MovementLogic(outputString, window);}
+                    	case "d" -> {MovementLogic(outputString, window);}
+                    	
+                    	case "e" -> {SelectTile();}
+                    	
                     	
                     	case "CLEAR" -> //If a button has been released
                 			System.out.println(outputString);
                     }
-
-                 //Store what the last input was to make sure we dont over take
-                  LastInput = outputString;
                 }
                 //If we couldn't read from sockets print error
                 catch(IOException i)
@@ -264,6 +231,7 @@ public static void main(String args[])
         //tiles that are NOT the player
         switch (board.BoardTiles[oldPos].tileType) {
             case "PERSON" -> BoardContainer.getComponent(oldPos).setBackground(Color.ORANGE);
+            case "POPUP" -> BoardContainer.getComponent(oldPos).setBackground(Color.CYAN);
             case "CAT" -> {
                 BoardContainer.getComponent(oldPos).setBackground(Color.WHITE);
                 board.BoardTiles[oldPos].tileType = "EMPTY";
@@ -352,5 +320,12 @@ public static void main(String args[])
 
 
         }
+    }
+    
+    
+    public static void SelectTile()
+    {
+    	System.out.println("Player is on a: "+ board.BoardTiles[player.currentTilePosition].tileType);
+    	PopUpManager.toggleNewFrame();
     }
 }
