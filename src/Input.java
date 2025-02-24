@@ -6,13 +6,14 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 import javax.swing.*;
-import java.time.*;
 
 //Class input extend the contents of JFrame and implements KeyListener
 class Input extends JFrame implements KeyListener{
 
     //Initialize our sockets and viarables
     public String InputString = "";
+
+    public Boolean Unfocused = true;
 
     //Temp
     //Creates our socket which will connect to the server
@@ -64,6 +65,7 @@ class Input extends JFrame implements KeyListener{
         //Frame can be focused
         setFocusable(true);
         setAlwaysOnTop(true);
+        setAutoRequestFocus(true);
         //Sets the size of the window
         setSize(500,500);
         //sets window 10px off the top left corner
@@ -243,23 +245,6 @@ class Input extends JFrame implements KeyListener{
         		  InputString = Character.toString(e.getKeyChar());
         		  out.writeUTF(InputString);  
         		  Render(InputString);
-        		  if(e.getKeyChar() == 'e')
-        		  {
-        			  try {
-						Thread.sleep(50);
-						requestFocus();
-						Thread.sleep(50);
-			            out.writeUTF("CLEAR");
-			            Render("CLEAR");
-			            CanRePaint = true;
-			            CanReInput = true;
-			            repaint(PicPos[key][0],PicPos[key][1],100,100);
-			            keyPressed = '&';
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-        		  }
         	  }
           }
           else if(CanReInput)
