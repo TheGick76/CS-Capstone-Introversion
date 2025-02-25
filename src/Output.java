@@ -28,7 +28,9 @@ class Output extends JFrame{
     //Energy,Score,CurrentTilePosition,Row Position, Coloumn Position
     public static Himothy player = new Himothy(1,0,0,0,0);
     
-
+    // Mini windows manager
+    public static PopUpManager popUpManager = new PopUpManager();
+    
     //Board Container
     public static JPanel BoardContainer = new JPanel();
 
@@ -175,7 +177,7 @@ public static void main(String args[])
         }
         //sets window 10px off the top right corner
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize(); 
-        setLocation(dim.width - getSize().width - 10, 10);
+        setLocation(10, 10);
         //sets window visible
         setVisible(true);
     }
@@ -192,7 +194,9 @@ public static void main(String args[])
                     //Store what the input was
                     outputString = in.readUTF();
                     
-                    
+                 if(popUpManager.GetActive())
+                	 popUpManager.Input(outputString);
+                 else
                     //Basic logic to prove inputs
                     switch(outputString)
                     {
@@ -262,7 +266,7 @@ public static void main(String args[])
     
     public static void SelectTile()
     {
-    	System.out.println("Player is on a: "+ board.BoardTiles[player.currentTilePosition].tileType);
-    	PopUpManager.toggleNewFrame();
+    	if(board.BoardTiles[player.currentTilePosition].tileType.equals("POPUP"))
+    		popUpManager.toggleNewFrame();
     }
 }
