@@ -29,7 +29,7 @@ class Output extends JFrame{
     public static Himothy player = new Himothy(1,0,0,0,0);
     
     // Mini windows manager
-    public static PopUpManager popUpManager = new PopUpManager();
+    public static PopUpManager popUpManager = new PopUpManager(player);
     
     //Board Container
     public static JPanel BoardContainer = new JPanel();
@@ -287,7 +287,7 @@ public static void main(String args[])
     {
         Tiles curTile = board.BoardTiles[player.currentTilePosition];
     	if(curTile.tileType.equals("POPUP"))
-    		popUpManager.toggleNewFrame();
+    		popUpManager.toggleNewFrame(curTile.PopupGame);
         else if(curTile.tileType.equals("MUSIC"))
         {
             if(curTile.musicalBox.countdownAmount <= 0)
