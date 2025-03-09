@@ -289,9 +289,15 @@ public static void main(String args[])
     	if(curTile.tileType.equals("POPUP"))
     		popUpManager.toggleNewFrame();
         else if(curTile.tileType.equals("MUSIC"))
+        {
             if(curTile.musicalBox.countdownAmount <= 0)
+            {
+            //curTile.musicSong = 3;
+            curTile.ChangeSong(3);
             curTile.beginMusic();
+            }
             else
             curTile.musicTimeRestart();
+        }
     }
 }

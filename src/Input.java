@@ -101,6 +101,7 @@ class Input extends JFrame implements KeyListener{
         try
         {
             //If succesful
+            //Does work with LAN IPs!!!!
          inputSocket = new Socket("127.0.0.1", 1027);
          out = new DataOutputStream(inputSocket.getOutputStream());
       //   ServerStatus.setText("Connected!");
