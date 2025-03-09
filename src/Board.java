@@ -25,18 +25,17 @@ public class Board {
         //Initalizes what tiles are which
         for(int i = 0; i < (Rows * Cols) ; i++) 
         {
-            if(i == 3)
-            {
-            BoardTiles[i] = new Tiles(TileCount, "CAT");
-            }
-            else if(i == 6)
-            {BoardTiles[i] = new Tiles(TileCount, "PERSON");}
-            else if(i == 12)
-            {BoardTiles[i] = new Tiles(TileCount, "POPUP");}
-            else if(i == 20)
-            {BoardTiles[i] = new Tiles(TileCount, "MUSIC");}
-            else
-            {BoardTiles[i] = new Tiles(TileCount, "EMPTY");}
+        	switch(i)
+        	{
+        	case 3 -> BoardTiles[i] = new Tiles(TileCount, "CAT");
+        	case 6 -> BoardTiles[i] = new Tiles(TileCount, "PERSON");
+        	case 12 -> {BoardTiles[i] = new Tiles(TileCount, "POPUP");BoardTiles[i].PopupGame = 1;}
+        	case 16 -> {BoardTiles[i] = new Tiles(TileCount, "POPUP");BoardTiles[i].PopupGame = 2;}
+        	case 20 -> BoardTiles[i] = new Tiles(TileCount, "MUSIC");
+        	default ->  BoardTiles[i] = new Tiles(TileCount, "EMPTY");
+
+        	}
+
                 TileCount++;
        }
     }
