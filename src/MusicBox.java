@@ -13,6 +13,12 @@ public class MusicBox implements Runnable {
         this.musicDisplay = musicDisplay;
     }
 
+    public void refresh(int max)
+    {
+        countdownAmount = max;
+        musicDisplay.setValue(max);
+    }
+
     public void run() {
             
         try {
@@ -27,6 +33,7 @@ public class MusicBox implements Runnable {
             Clip clip = AudioSystem.getClip();
             //Start music
                 clip.open(audioInput);
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
                 clip.start();
 
                 while (countdownAmount > 0) {

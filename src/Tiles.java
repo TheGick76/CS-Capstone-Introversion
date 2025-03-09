@@ -101,10 +101,18 @@ public class Tiles extends JPanel{
 
     }
 
+    MusicBox musicalBox = new MusicBox(musicTime, musicDuration);
+
     public void beginMusic()
-    {
-        Thread musicThread = new Thread(new MusicBox(musicTime, musicDuration));
+    { 
+        musicTimeRestart();
+        Thread musicThread = new Thread(musicalBox);
         musicThread.start();
+    }
+
+    public void musicTimeRestart()
+    {
+        musicalBox.refresh(musicTime);
     }
 
     void Music()

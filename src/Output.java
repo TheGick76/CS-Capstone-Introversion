@@ -285,7 +285,13 @@ public static void main(String args[])
     
     public static void SelectTile()
     {
-    	if(board.BoardTiles[player.currentTilePosition].tileType.equals("POPUP"))
+        Tiles curTile = board.BoardTiles[player.currentTilePosition];
+    	if(curTile.tileType.equals("POPUP"))
     		popUpManager.toggleNewFrame();
+        else if(curTile.tileType.equals("MUSIC"))
+            if(curTile.musicalBox.countdownAmount <= 0)
+            curTile.beginMusic();
+            else
+            curTile.musicTimeRestart();
     }
 }
