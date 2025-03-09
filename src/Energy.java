@@ -5,13 +5,14 @@ public class Energy implements Runnable {
     public Himothy player ;
     public Board board ;
     public JProgressBar energy ;
+    public JLabel score;
 
-    Energy(Himothy player, Board board, JProgressBar energy) {
+    Energy(Himothy player, Board board, JProgressBar energy, JLabel score) {
 
         this.player = player ;
         this.board = board ;
         this.energy = energy ;
-
+        this.score = score;
     }
 
     public void run() {
@@ -41,11 +42,15 @@ public class Energy implements Runnable {
                 }
 
                 case("PERSON") -> {
-                    extraEnergyChange = 1 ;
+                    extraEnergyChange = 2 ;
                 }
 
                 case("CAT") -> {
                     extraEnergyChange = -10 ;
+                }
+
+                case("CRUSH") -> {
+                    extraEnergyChange = 4;
                 }
             }
 
@@ -61,6 +66,12 @@ public class Energy implements Runnable {
 
             energy.setValue(currentEnergy) ;
 
+            //Basic energy to points, person tiles
+            if(extraEnergyChange > 0)
+            {
+            player.score += extraEnergyChange;
+            score.setText("Score: " + player.score);
+            }
         }
 
     }

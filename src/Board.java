@@ -1,9 +1,8 @@
-import java.awt.Color;
 
 public class Board {
 
-    public static int Rows = 4;
-    public static int Cols = 4;
+    public static int Rows;
+    public static int Cols;
     public static Tiles[] BoardTiles = new Tiles[Rows * Cols];
 
     Board(int Rows, int Cols , String BoardName)
@@ -34,6 +33,8 @@ public class Board {
             {BoardTiles[i] = new Tiles(TileCount, "PERSON");}
             else if(i == 12)
             {BoardTiles[i] = new Tiles(TileCount, "POPUP");}
+            else if(i == 20)
+            {BoardTiles[i] = new Tiles(TileCount, "MUSIC");}
             else
             {BoardTiles[i] = new Tiles(TileCount, "EMPTY");}
                 TileCount++;

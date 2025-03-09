@@ -1,4 +1,3 @@
-import javax.swing.JFrame;
 
 public class Himothy {
     
@@ -79,16 +78,5 @@ public class Himothy {
 
         }
         return oldPos;
-    }
-    
-
-
-    public void EnergyDown()
-    {
-
-    //while forever
-     // if(on perosn tile)  
-     //energy -= 1;
-     
     }
 }

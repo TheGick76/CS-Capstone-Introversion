@@ -1,8 +1,14 @@
-public class Tiles {
+import java.awt.Color;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+
+public class Tiles extends JPanel{
 
     //What tile number is it
     int tileNumber;
-
+    JProgressBar musicDuration = new JProgressBar();
+    int musicTime = 60;
 
     //"Empty" "People" "Cat" "Ect."
     String tileType;
@@ -12,5 +18,102 @@ public class Tiles {
     {
         this.tileNumber = tileNum;
         this.tileType = tileType;
+        specificTileGoodies(tileType);
+        backgroundSet(tileType);
+        assignGame(tileType);
+    }
+
+    void specificTileGoodies(String s)
+    {
+        switch(s)
+        {
+            case("MUSIC") ->
+            {
+                setLayout(new BoxLayout(this,2));
+                musicDuration.setMaximum(musicTime);
+                musicDuration.setValue(musicTime);
+                add(musicDuration);
+            }
+            default ->
+            {
+
+            }
+        }
+    }
+
+    void backgroundSet(String s)
+    {
+        switch(s){
+            case("EMPTY") ->
+            {
+             setBackground(Color.WHITE);
+            }
+            case("PERSON") ->
+            {
+             setBackground(Color.ORANGE);
+            }
+            case("CAT")->
+            {
+             setBackground(Color.GREEN);
+            }
+            case("POPUP")->
+            {
+             setBackground(Color.cyan);
+            }
+            case("PLAYER")->
+            {
+             setBackground(Color.RED);
+            }
+            case("MUSIC") ->
+            {
+                setBackground(Color.YELLOW);
+            }
+            default->
+            {
+             setBackground(Color.MAGENTA);
+            }
+        }   
+    }
+
+    void assignGame(String type)
+    {
+
+
+    }
+
+    void SimonSays()
+    {
+
+    }
+
+    void Mash()
+    {
+
+    }
+
+    void Platoformer()
+    {
+
+    }
+
+    void SpinTheBottle()
+    {
+
+    }
+
+    public void beginMusic()
+    {
+        Thread musicThread = new Thread(new MusicBox(musicTime, musicDuration));
+        musicThread.start();
+    }
+
+    void Music()
+    {
+        
+    }
+
+    void TimingPong()
+    {
+
     }
 }

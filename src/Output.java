@@ -35,16 +35,17 @@ class Output extends JFrame{
     public static JPanel BoardContainer = new JPanel();
 
     //Board initializer
-    public static Board board = new Board(4,4,"GAME");
+    public static Board board = new Board(6,6,"GAME");
 
     //Change how these are assigned later
     public static int Rows = Board.Rows;
     public static int Cols = Board.Cols;
 
     //The label that will display the current time, will send to Timer class
-    public static JLabel TimerDisplay = new JLabel("Timer: ");
-    public static JLabel CountdownDisplay = new JLabel("Countdown: ");
+   // public static JLabel TimerDisplay = new JLabel("Timer: ");
+    public static JLabel CountdownDisplay = new JLabel("Countdown: 5:00");
     public static JProgressBar EnergyBar = new JProgressBar();
+    public static JLabel ScoreDisplay = new JLabel("Score: 0");
     
 
 
@@ -85,12 +86,16 @@ public static void main(String args[])
             receiveingSocket = ss.accept();
 
         //Thread for timer
-        Thread timerThread = new Thread(new Timer(0, TimerDisplay));
+     //   Thread timerThread = new Thread(new Timer(0, TimerDisplay));
         Thread countdownThread = new Thread(new Countdown(0, 300, CountdownDisplay));
-        timerThread.start();
+       // timerThread.start();
         countdownThread.start();
 
-        Thread Energy = new Thread(new Energy(player, board, EnergyBar)) ;
+        Thread Energy = new Thread(new Energy(player, board, EnergyBar, ScoreDisplay)) ;
+
+        //Calls the thread to begin the music minigame
+        board.BoardTiles[20].beginMusic();
+
         Energy.start() ;
 
             //Confirming client has connected
@@ -141,9 +146,9 @@ public static void main(String args[])
         pack();
 
         //Timer display
-        TimerDisplay.setSize(100,100);
+      //  TimerDisplay.setSize(100,100);
         //TimerDisplay.setBounds(10, 100,100,100);
-        statsPanel.add(TimerDisplay);
+       // statsPanel.add(TimerDisplay);
 
         CountdownDisplay.setSize(100,100);
         statsPanel.add(CountdownDisplay);
@@ -156,15 +161,21 @@ public static void main(String args[])
         EnergyBar.setSize(200,100);
        // EnergyBar.setBounds(200, 100, 100,100);
 
+       //Buffers for display
        statsPanel.add(new JPanel());
        statsPanel.add(new JPanel());
 
         statsPanel.add(EnergyBar);
 
+        statsPanel.add(ScoreDisplay);
+
+
+
         //Add tile panels
         //Initializes colors of the tiles, make seperate function?
         for(int i = 0; i < (Rows * Cols); i++)
         {
+            /*
             JPanel temp = new JPanel();
             BoardContainer.add(temp, i);
             switch (board.BoardTiles[i].tileType) {
@@ -172,7 +183,12 @@ public static void main(String args[])
                 case "CAT" -> temp.setBackground(Color.GREEN);
                 case "POPUP" -> temp.setBackground(Color.cyan);
                 default -> temp.setBackground(Color.WHITE);
+
+
             }
+                */
+            BoardContainer.add(board.BoardTiles[i],i);
+
 
         }
         //sets window 10px off the top right corner
@@ -234,16 +250,19 @@ public static void main(String args[])
     {
         //tiles that are NOT the player
         switch (board.BoardTiles[oldPos].tileType) {
-            case "PERSON" -> BoardContainer.getComponent(oldPos).setBackground(Color.ORANGE);
-            case "POPUP" -> BoardContainer.getComponent(oldPos).setBackground(Color.CYAN);
+            case "PERSON" -> board.BoardTiles[oldPos].backgroundSet("PERSON");
+            case "POPUP" -> board.BoardTiles[oldPos].backgroundSet("POPUP");
             case "CAT" -> {
-                BoardContainer.getComponent(oldPos).setBackground(Color.WHITE);
+                //Tiles that change when player moves over it
+                board.BoardTiles[oldPos].backgroundSet("EMPTY");
                 board.BoardTiles[oldPos].tileType = "EMPTY";
             }
-            default -> BoardContainer.getComponent(oldPos).setBackground(Color.WHITE);
+            case "MUSIC" -> board.BoardTiles[oldPos].backgroundSet("MUSIC");
+            case "EMPTY" -> board.BoardTiles[oldPos].backgroundSet("EMPTY");
+            default -> board.BoardTiles[oldPos].backgroundSet("");
         }
        //The Player
-       BoardContainer.getComponent(player.currentTilePosition).setBackground(Color.RED);
+       board.BoardTiles[player.currentTilePosition].backgroundSet("PLAYER");
     }
 
     //Function for doing what the current tile action is
@@ -252,7 +271,7 @@ public static void main(String args[])
     {
         if(board.BoardTiles[player.currentTilePosition].tileType.equals("CAT"))
         {
-             player.score += 1;
+            // player.score += 1;
         }  
     }
 
