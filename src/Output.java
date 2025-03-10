@@ -9,6 +9,7 @@ class Output extends JFrame{
 
     //Go through and reprivate all these things, they shouldn't be public
     //Id do it but im so lazy - Josh
+    //I didn't write this ^
 
     //Create a socket that will then be connected to server
     public static Socket receiveingSocket = null;
