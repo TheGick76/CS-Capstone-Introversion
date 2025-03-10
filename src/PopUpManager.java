@@ -5,13 +5,16 @@ public class PopUpManager
 		private boolean Active = false;
 		private Himothy ref;
 		private JFrame CurrentFrame;
+		private Board board;
 		
 		private int Game;
  		TileMove TMove = new TileMove();
+		MusicPopup Stereo = new MusicPopup();
  		
- 		PopUpManager(Himothy playerRef)
+ 		PopUpManager(Himothy playerRef, Board board)
  		{
  			this.ref = playerRef;
+			this.board = board;
  		}
  		
 		public boolean GetActive()
@@ -25,10 +28,10 @@ public class PopUpManager
             switch(Game)
             {
             	case 1-> TMove.kill();
-
+				case 2 -> Stereo.kill();
 
             }
-            Game = -1;
+            Game = 0;
 			Active = false;
 			CurrentFrame = null;
 		}
@@ -41,7 +44,11 @@ public class PopUpManager
            	switch(Game)
          	{
          	case 1 -> CurrentFrame = TMove.Start();
-         	case 2 -> System.out.println("Fail tile");
+			case 2 -> {
+				Stereo.Stereo = board.BoardTiles[20].musicalBox;
+				Stereo.board = board;
+				CurrentFrame = Stereo.Start();}
+         	default -> System.out.println("Fail tile");
          	}
         	CurrentFrame.setVisible(true);
         }
@@ -54,6 +61,7 @@ public class PopUpManager
              switch(Game)
              {
              case 1-> Reward(TMove.GetInput(CurrentFrame, input));
+			 case 2 -> Stereo.GetInput(CurrentFrame, input);
              }
         }
         
@@ -62,7 +70,6 @@ public class PopUpManager
 	        	if(b==1)
 	                switch(Game)
 	                {
-	                	//case 1-> ref.score += TMove.Win;
 						case 1 -> ref.UpdateScore(TMove.Win);
 	                	
 	                }
@@ -70,7 +77,6 @@ public class PopUpManager
 	        	else if(b==-1)
 	                switch(Game)
 	                {
-	                	//case 1-> ref.score += TMove.Lose;
 						case 1 -> ref.UpdateScore(TMove.Lose);
 	                }
 	        	if(b!=0)

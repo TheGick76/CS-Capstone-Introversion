@@ -8,6 +8,7 @@ public class MusicBox implements Runnable {
     public int countdownAmount ;
     public int Song;
     public JProgressBar musicDisplay;
+    boolean Stop = false;
 
     public MusicBox(int countdownAmount, JProgressBar musicDisplay, int Song) {
         this.countdownAmount = countdownAmount ;
@@ -57,10 +58,10 @@ public class MusicBox implements Runnable {
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
                 clip.start();
 
-                while (countdownAmount > 0) {
+                while (countdownAmount > 0 && !Stop) {
 
                     try {
-                        Thread.sleep(1000) ;
+                        Thread.sleep(1) ;
                     } catch (InterruptedException e) {
                         System.out.println(e);
                     }
@@ -68,11 +69,16 @@ public class MusicBox implements Runnable {
                     musicDisplay.setValue(countdownAmount);
                 }
         
-                if(countdownAmount <= 0)
+                if(countdownAmount <= 0 || Stop)
                 {
                     clip.stop();
                     clip.close();
                     audioInput.close();
+                }
+                try {
+                    Thread.sleep(10) ;
+                } catch (InterruptedException e) {
+                    System.out.println(e);
                 }
                 return;
             }

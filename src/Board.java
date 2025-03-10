@@ -30,8 +30,8 @@ public class Board {
          	case 3 -> BoardTiles[i] = new Tiles(TileCount, "CAT");
          	case 6 -> BoardTiles[i] = new Tiles(TileCount, "PERSON");
          	case 12 -> {BoardTiles[i] = new Tiles(TileCount, "POPUP");BoardTiles[i].PopupGame = 1;}
-         	case 16 -> {BoardTiles[i] = new Tiles(TileCount, "POPUP");BoardTiles[i].PopupGame = 2;}
-         	case 20 -> BoardTiles[i] = new Tiles(TileCount, "MUSIC");
+         	case 16 -> BoardTiles[i] = new Tiles(TileCount, "POPUP");
+         	case 20 -> {BoardTiles[i] = new Tiles(TileCount, "MUSIC"); BoardTiles[i].PopupGame = 2;}
          	default ->  BoardTiles[i] = new Tiles(TileCount, "EMPTY");
          	}
                 TileCount++;

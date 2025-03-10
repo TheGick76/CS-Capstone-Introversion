@@ -31,8 +31,7 @@ class Output extends JFrame{
     //Energy,Score,CurrentTilePosition,Row Position, Coloumn Position
     public static Himothy player = new Himothy(1,0,0,0,0, ScoreDisplay);
     
-    // Mini windows manager
-    public static PopUpManager popUpManager = new PopUpManager(player);
+
     
     //Board Container
     public static JPanel BoardContainer = new JPanel();
@@ -42,7 +41,9 @@ class Output extends JFrame{
 
     //Change how these are assigned later
     public static int Rows = Board.Rows;
-    public static int Cols = Board.Cols;
+    public static int Cols = Board.Cols; 
+     // Mini windows manager
+    public static PopUpManager popUpManager = new PopUpManager(player, board);
 
     //The label that will display the current time, will send to Timer class
    // public static JLabel TimerDisplay = new JLabel("Timer: ");
@@ -292,12 +293,15 @@ public static void main(String args[])
     		popUpManager.toggleNewFrame(curTile.PopupGame);
         else if(curTile.tileType.equals("MUSIC"))
         {
+            popUpManager.toggleNewFrame(curTile.PopupGame);
+            /*/
             if(curTile.musicalBox.countdownAmount <= 0)
             {
             curTile.beginMusic();
             }
             else
             curTile.musicTimeRestart();
+            */
         }
     }
 }

@@ -8,7 +8,7 @@ public class Tiles extends JPanel{
     //What tile number is it
     int tileNumber;
     JProgressBar musicDuration = new JProgressBar();
-    int musicTime = 60;
+    int musicTime = 60000;
     int musicSong = 4;
     int PopupGame;
 
@@ -114,12 +114,21 @@ public class Tiles extends JPanel{
 
     public void musicTimeRestart()
     {
+        musicalBox.Stop = false;
         musicalBox.refresh(musicTime);
     }
 
     public void ChangeSong(int Song)
     {
-        musicalBox.Song = Song;
+        musicalBox.Stop = true;
+        musicalBox.Song = Song;  
+        try {
+            Thread.sleep(10);
+            musicalBox.Stop = false;
+            Thread musicThread = new Thread(musicalBox);
+            musicThread.start();
+        } catch (Exception e) {
+        }
     }
 
     void Music()
@@ -132,3 +141,4 @@ public class Tiles extends JPanel{
 
     }
 }
+
