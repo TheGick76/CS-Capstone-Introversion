@@ -12,7 +12,7 @@ public class MusicPopup{
        JLabel quitStr = new JLabel("Quit: E");
        JLabel refreshStr = new JLabel("Refresh: Space");
        MusicBox Stereo;
-       Board board;
+       //Board board;
        int songNum = 4;
 
     JFrame Start()
@@ -54,7 +54,7 @@ public class MusicPopup{
                 {
                     songNum = 1;
                 }
-                board.BoardTiles[20].ChangeSong(songNum);
+                Stereo.ChangeSong(songNum);
                 getMyStrings();
                 
             }

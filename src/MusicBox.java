@@ -22,6 +22,32 @@ public class MusicBox implements Runnable {
         musicDisplay.setValue(max);
     }
 
+    public void beginMusic()
+    { 
+        musicTimeRestart();
+        Thread musicThread = new Thread(this);
+        musicThread.start();
+    }
+
+    public void musicTimeRestart()
+    {
+        Stop = false;
+        refresh(60000);
+    }
+
+    public void ChangeSong(int newSong)
+    {
+        Stop = true; 
+        Song = newSong;
+        try {
+            Thread.sleep(10);
+            Stop = false;
+            Thread musicThread = new Thread(this);
+            musicThread.start();
+        } catch (Exception e) {
+        }
+    }
+
     public void run() {
             
         try {
