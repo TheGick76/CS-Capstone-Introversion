@@ -5,6 +5,7 @@ public class PopUpManager
 		private boolean Active = false;
 		private Himothy ref;
 		private JFrame CurrentFrame;
+		//See line 50
 		private Board board;
 		
 		private int Game;
@@ -45,8 +46,9 @@ public class PopUpManager
          	{
          	case 1 -> CurrentFrame = TMove.Start();
 			case 2 -> {
+				//musicalBox object needs to be sent to the MusicPopup, somehow, so it uses the board
 				Stereo.Stereo = board.BoardTiles[20].musicalBox;
-				Stereo.board = board;
+				//Stereo.board = board;
 				CurrentFrame = Stereo.Start();}
          	default -> System.out.println("Fail tile");
          	}

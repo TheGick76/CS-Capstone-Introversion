@@ -61,11 +61,11 @@ public class MusicPopup{
             case " " -> {
                 if(Stereo.countdownAmount <= 0)
                 {
-                    board.BoardTiles[20].beginMusic();
+                    Stereo.beginMusic();
                 }
                 else
                 {
-                    board.BoardTiles[20].musicTimeRestart();
+                    Stereo.musicTimeRestart();
                 }
             }
             case "CLEAR" -> {CurrentFrame.getContentPane().setBackground(Color.WHITE);}

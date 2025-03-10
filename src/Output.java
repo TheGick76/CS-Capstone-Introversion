@@ -97,7 +97,7 @@ public static void main(String args[])
         Thread Energy = new Thread(new Energy(player, board, EnergyBar, ScoreDisplay)) ;
 
         //Calls the thread to begin the music minigame
-        board.BoardTiles[20].beginMusic();
+        board.BoardTiles[19].musicalBox.beginMusic();
 
         Energy.start() ;
 
@@ -178,21 +178,7 @@ public static void main(String args[])
         //Initializes colors of the tiles, make seperate function?
         for(int i = 0; i < (Rows * Cols); i++)
         {
-            /*
-            JPanel temp = new JPanel();
-            BoardContainer.add(temp, i);
-            switch (board.BoardTiles[i].tileType) {
-                case "PERSON" -> temp.setBackground(Color.ORANGE);
-                case "CAT" -> temp.setBackground(Color.GREEN);
-                case "POPUP" -> temp.setBackground(Color.cyan);
-                default -> temp.setBackground(Color.WHITE);
-
-
-            }
-                */
             BoardContainer.add(board.BoardTiles[i],i);
-
-
         }
         //sets window 10px off the top right corner
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize(); 
