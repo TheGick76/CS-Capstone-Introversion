@@ -7,10 +7,10 @@ public class Tiles extends JPanel{
 
     //What tile number is it
     int tileNumber;
-    int PopupGame;
     JProgressBar musicDuration = new JProgressBar();
-    int musicTime = 6;
+    int musicTime = 60;
     int musicSong = 4;
+    int PopupGame;
 
     //"Empty" "People" "Cat" "Ect."
     String tileType;

@@ -52,6 +52,8 @@ public class Energy implements Runnable {
                 case("CRUSH") -> {
                     extraEnergyChange = 4;
                 }
+                default -> extraEnergyChange = 0;
+                
             }
 
             // change energy based on standard energy change and extra energy change amounts
@@ -65,12 +67,17 @@ public class Energy implements Runnable {
             }
 
             energy.setValue(currentEnergy) ;
+            player.Energy = energy.getValue();
 
             //Basic energy to points, person tiles
             if(extraEnergyChange > 0)
             {
-            player.score += extraEnergyChange;
-            score.setText("Score: " + player.score);
+                try {
+                    player.UpdateScore(extraEnergyChange);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+             
             }
         }
 

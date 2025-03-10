@@ -62,14 +62,16 @@ public class PopUpManager
 	        	if(b==1)
 	                switch(Game)
 	                {
-	                	case 1-> ref.score += TMove.Win;
+	                	//case 1-> ref.score += TMove.Win;
+						case 1 -> ref.UpdateScore(TMove.Win);
 	                	
 	                }
 	        	
 	        	else if(b==-1)
 	                switch(Game)
 	                {
-	                	case 1-> ref.score += TMove.Lose;
+	                	//case 1-> ref.score += TMove.Lose;
+						case 1 -> ref.UpdateScore(TMove.Lose);
 	                }
 	        	if(b!=0)
 	        		KillFrame();

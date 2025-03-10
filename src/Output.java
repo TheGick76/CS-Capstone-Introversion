@@ -25,8 +25,11 @@ class Output extends JFrame{
     //if client disconnected
     public static Boolean creationBool = true;
 
+    //Score Display
+    public static JLabel ScoreDisplay = new JLabel("Score: 0");
+
     //Energy,Score,CurrentTilePosition,Row Position, Coloumn Position
-    public static Himothy player = new Himothy(1,0,0,0,0);
+    public static Himothy player = new Himothy(1,0,0,0,0, ScoreDisplay);
     
     // Mini windows manager
     public static PopUpManager popUpManager = new PopUpManager(player);
@@ -45,7 +48,6 @@ class Output extends JFrame{
    // public static JLabel TimerDisplay = new JLabel("Timer: ");
     public static JLabel CountdownDisplay = new JLabel("Countdown: 5:00");
     public static JProgressBar EnergyBar = new JProgressBar();
-    public static JLabel ScoreDisplay = new JLabel("Score: 0");
     
 
 
@@ -292,8 +294,6 @@ public static void main(String args[])
         {
             if(curTile.musicalBox.countdownAmount <= 0)
             {
-            //curTile.musicSong = 3;
-            curTile.ChangeSong(3);
             curTile.beginMusic();
             }
             else

@@ -1,4 +1,7 @@
 
+import javax.swing.JLabel;
+
+
 public class Himothy {
     
     int Energy;
@@ -6,14 +9,16 @@ public class Himothy {
     int rowPos;
     int colPos;
     int currentTilePosition;
+    JLabel ScoreDisplay;
 
-    Himothy(int Energy, int score, int currentTilePosition, int rowPos, int colPos)
+    Himothy(int Energy, int score, int currentTilePosition, int rowPos, int colPos, JLabel ScoreDisplay)
     {
         this.Energy = Energy;
         this.score = score;
         this.currentTilePosition = currentTilePosition;
         this.rowPos = rowPos;
         this.colPos = colPos;
+        this.ScoreDisplay = ScoreDisplay;
     }
     
     public int MovementLogic(String input, Board B)
@@ -78,5 +83,11 @@ public class Himothy {
 
         }
         return oldPos;
+    }
+
+    public void UpdateScore(int Score)
+    {
+        score += Score;
+        ScoreDisplay.setText("Score: " + score);
     }
 }
