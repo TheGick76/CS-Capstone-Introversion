@@ -97,7 +97,7 @@ public static void main(String args[])
         Thread Energy = new Thread(new Energy(player, board, EnergyBar, ScoreDisplay)) ;
 
         //Calls the thread to begin the music minigame
-        board.BoardTiles[19].musicalBox.beginMusic();
+        board.BoardTiles[20].musicalBox.beginMusic();
 
         Energy.start() ;
 
