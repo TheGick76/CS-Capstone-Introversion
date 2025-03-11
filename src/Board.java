@@ -1,14 +1,23 @@
 
+import javax.swing.JLabel;
+
+
 public class Board {
 
     public static int Rows;
     public static int Cols;
     public static Tiles[] BoardTiles = new Tiles[Rows * Cols];
 
+    public static JLabel label1;
+    public static JLabel label2;
+
     Board(int Rows, int Cols , String BoardName)
     {
         Board.Rows = Rows;
         Board.Cols = Cols;
+        Board.label1 = label1;
+        Board.label2 = label2;
+
         BoardTiles = new Tiles[Rows * Cols];
         switch (BoardName) 
         {
@@ -33,7 +42,10 @@ public class Board {
          	case 16 -> BoardTiles[i] = new Tiles(TileCount, "POPUP");
          	case 20 -> {BoardTiles[i] = new Tiles(TileCount, "MUSIC"); 
             BoardTiles[i].PopupGame = 2;
-            BoardTiles[i].Music();}
+            BoardTiles[i].Music();
+            BoardTiles[i].credits = "";
+            BoardTiles[i].curSong = "";
+            }
          	default ->  BoardTiles[i] = new Tiles(TileCount, "EMPTY");
          	}
                 TileCount++;

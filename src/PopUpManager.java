@@ -5,17 +5,13 @@ public class PopUpManager
 		private boolean Active = false;
 		private Himothy ref;
 		private JFrame CurrentFrame;
-		//See line 50
-		private Board board;
 		
 		private int Game;
  		TileMove TMove = new TileMove();
-		MusicPopup Stereo = new MusicPopup();
  		
- 		PopUpManager(Himothy playerRef, Board board)
+ 		PopUpManager(Himothy playerRef)
  		{
  			this.ref = playerRef;
-			this.board = board;
  		}
  		
 		public boolean GetActive()
@@ -29,8 +25,6 @@ public class PopUpManager
             switch(Game)
             {
             	case 1-> TMove.kill();
-				case 2 -> Stereo.kill();
-
             }
             Game = 0;
 			Active = false;
@@ -45,11 +39,6 @@ public class PopUpManager
            	switch(Game)
          	{
          	case 1 -> CurrentFrame = TMove.Start();
-			case 2 -> {
-				//musicalBox object needs to be sent to the MusicPopup, somehow, so it uses the board
-				Stereo.Stereo = board.BoardTiles[20].musicalBox;
-				//Stereo.board = board;
-				CurrentFrame = Stereo.Start();}
          	default -> System.out.println("Fail tile");
          	}
         	CurrentFrame.setVisible(true);
@@ -63,7 +52,6 @@ public class PopUpManager
              switch(Game)
              {
              case 1-> Reward(TMove.GetInput(CurrentFrame, input));
-			 case 2 -> Stereo.GetInput(CurrentFrame, input);
              }
         }
         

@@ -9,11 +9,16 @@ public class MusicBox implements Runnable {
     public int Song;
     public JProgressBar musicDisplay;
     boolean Stop = false;
+    public String credits;
+    public String curSong;
+    public String Controls = "Refresh: 'Space', Next Song: 'Q'";
 
-    public MusicBox(int countdownAmount, JProgressBar musicDisplay, int Song) {
+    public MusicBox(int countdownAmount, JProgressBar musicDisplay, int Song, String Credits, String Cursong) {
         this.countdownAmount = countdownAmount ;
         this.musicDisplay = musicDisplay;
         this.Song = Song;
+        this.credits = Credits;
+        this.curSong = Cursong;
     }
 
     public void refresh(int max)
@@ -27,6 +32,7 @@ public class MusicBox implements Runnable {
         musicTimeRestart();
         Thread musicThread = new Thread(this);
         musicThread.start();
+        getMyStrings();
     }
 
     public void musicTimeRestart()
@@ -40,12 +46,64 @@ public class MusicBox implements Runnable {
         Stop = true; 
         Song = newSong;
         try {
-            Thread.sleep(10);
+            Thread.sleep(5);
             Stop = false;
             Thread musicThread = new Thread(this);
             musicThread.start();
         } catch (Exception e) {
         }
+    }
+
+    void getMyStrings()
+    {
+        String creditString;
+        switch(Song)
+        {
+            case 1 -> {creditString = "<HTML>Song: Zachz, Фрози, Joyful - Boogie <br>" + //
+                                "Music provided by NoCopyrightSounds<br>" + //
+                                "Free Download/Stream: http://ncs.io/Boogie<br>" + //
+                                "Watch: http://ncs.lnk.to/BoogieAT/youtube<HTML/>";
+                        credits = creditString;
+                        curSong="Boogie";}
+            case 2 -> {creditString = "Song: Silent Partner - The Messenger";
+            credits=creditString;
+            curSong="The Messenger";}
+            case 3 -> {creditString = "Song: Juhani Junkala - Chiptune Level 2";
+            credits=creditString;
+            curSong="Chiptune";}
+            case 4 -> {creditString = "Song Antonio Vivaldi - The Four Seasons (Winter)";
+            credits=creditString;
+            curSong="Winter";}
+            default -> creditString = "What";
+        }
+    }
+
+    void GetInput(String input)
+    {
+        switch(input)
+        {
+           case "q" -> {
+               Song++;
+               if(Song > 4)
+               {
+                   Song = 1;
+               }
+               ChangeSong(Song);
+               getMyStrings();
+               
+           }
+           case " " -> {
+               if(countdownAmount <= 0)
+               {
+                   beginMusic();
+               }
+               else
+               {
+                   musicTimeRestart();
+               }
+           }
+           case "CLEAR" -> {}
+        }	
     }
 
     public void run() {

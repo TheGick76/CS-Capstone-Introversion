@@ -265,12 +265,7 @@ class Input extends JFrame implements KeyListener{
     public void keyReleased(KeyEvent e) {
       //  throw new UnsupportedOperationException("Not supported yet.");
       try
-        {
-           // InputString = e.getKeyChar();
-          //  InputString = Character.toString(e.getKeyChar());
-          //  System.out.println(InputString);
-    	  
-    	  
+        {  
     	  //Only acts if a desired key was pressed then released
     	  if(e.getKeyChar()==keyPressed && keyPressed != '&')
     	  {

@@ -12,44 +12,50 @@ class Output extends JFrame{
     //I didn't write this ^
 
     //Create a socket that will then be connected to server
-    public static Socket receiveingSocket = null;
+    private static Socket receiveingSocket = null;
 
     //Data Stream that will take in the data from a selected source
-    public static DataInputStream in = null;
+    private static DataInputStream in = null;
 
     //The server
-    public static ServerSocket ss = null;
+    private static ServerSocket ss = null;
 
     //Will be changed to what key / string was sent from inputs
-    public static String outputString = "";
+    private static String outputString = "";
 
     //if client disconnected
-    public static Boolean creationBool = true;
+    private static Boolean creationBool = true;
 
     //Score Display
-    public static JLabel ScoreDisplay = new JLabel("Score: 0");
+    private final static JLabel ScoreDisplay = new JLabel("Score: 0");
 
     //Energy,Score,CurrentTilePosition,Row Position, Coloumn Position
-    public static Himothy player = new Himothy(1,0,0,0,0, ScoreDisplay);
+    private final static Himothy player = new Himothy(1,0,0,0,0, ScoreDisplay);
     
 
-    
+    //Stats Labels
+    private final static JLabel label1 = new JLabel();
+    private final static JLabel label2 = new JLabel();
+    private static JLabel label3 = new JLabel();
+
     //Board Container
-    public static JPanel BoardContainer = new JPanel();
+    private final static JPanel BoardContainer = new JPanel();
 
     //Board initializer
-    public static Board board = new Board(6,6,"GAME");
+    private final static Board board = new Board(6,6,"GAME");
 
     //Change how these are assigned later
-    public static int Rows = Board.Rows;
-    public static int Cols = Board.Cols; 
+    private static int Rows = Board.Rows;
+    private static int Cols = Board.Cols; 
      // Mini windows manager
-    public static PopUpManager popUpManager = new PopUpManager(player, board);
+    private final static PopUpManager popUpManager = new PopUpManager(player);
 
     //The label that will display the current time, will send to Timer class
    // public static JLabel TimerDisplay = new JLabel("Timer: ");
-    public static JLabel CountdownDisplay = new JLabel("Countdown: 5:00");
-    public static JProgressBar EnergyBar = new JProgressBar();
+   private final static JLabel CountdownDisplay = new JLabel("Countdown: 5:00");
+   private final static JProgressBar EnergyBar = new JProgressBar();
+
+ 
     
 
 
@@ -98,6 +104,7 @@ public static void main(String args[])
         Thread Energy = new Thread(new Energy(player, board, EnergyBar, ScoreDisplay)) ;
 
         //Calls the thread to begin the music minigame
+        //Change to get what tile is music tile dynamically
         board.BoardTiles[20].musicalBox.beginMusic();
 
         Energy.start() ;
@@ -141,9 +148,10 @@ public static void main(String args[])
         //Boardcontainer initializization
         BoardContainer.setPreferredSize(new Dimension(500,500));
         BoardContainer.setLayout(new GridLayout(Rows,Cols));
+        BoardContainer.setBackground(Color.BLACK);
         add(BoardContainer);
 
-        JPanel statsPanel = new JPanel();
+        JPanel statsPanel = new JPanel(new FlowLayout(1,400,10));
         statsPanel.setPreferredSize(new Dimension(300,500));
         add(statsPanel);
 
@@ -155,7 +163,9 @@ public static void main(String args[])
        // statsPanel.add(TimerDisplay);
 
         CountdownDisplay.setSize(100,100);
-        statsPanel.add(CountdownDisplay);
+        JPanel countdownpanel = new JPanel();
+        countdownpanel.add(CountdownDisplay);
+        statsPanel.add(countdownpanel);
 
         EnergyBar.setMaximum(100);
         EnergyBar.setValue(100);
@@ -166,12 +176,23 @@ public static void main(String args[])
        // EnergyBar.setBounds(200, 100, 100,100);
 
        //Buffers for display
-       statsPanel.add(new JPanel());
-       statsPanel.add(new JPanel());
+      // statsPanel.add(new JPanel());
+       //statsPanel.add(new JPanel());
 
-        statsPanel.add(EnergyBar);
+       JPanel energypanel = new JPanel();
+        energypanel.add(EnergyBar);
+        statsPanel.add(energypanel);
 
-        statsPanel.add(ScoreDisplay);
+        JPanel scorepanel = new JPanel();
+        scorepanel.add(ScoreDisplay);
+        statsPanel.add(scorepanel);
+
+       statsPanel.add(label3);
+       statsPanel.add(label2);
+       statsPanel.add(label1);
+       
+
+        
 
 
 
@@ -213,6 +234,9 @@ public static void main(String args[])
                     	case "d" -> {MovementLogic(outputString, window);}
                     	
                     	case "e" -> {SelectTile();}
+
+                        case " " -> {CurrentTileAction(outputString);}
+                        case "q" -> {CurrentTileAction(outputString);}
                     	
                     	
                     	case "CLEAR" -> //If a button has been released
@@ -255,21 +279,35 @@ public static void main(String args[])
        board.BoardTiles[player.currentTilePosition].backgroundSet("PLAYER");
     }
 
-    //Function for doing what the current tile action is
-    //Probably where the most multithreading interactions will happen
-    public static void CurrentTileAction()
+    //Function for doing what the current tile action(s) is
+    public static void CurrentTileAction(String input)
     {
-        if(board.BoardTiles[player.currentTilePosition].tileType.equals("CAT"))
-        {
-            // player.score += 1;
-        }  
+        Tiles curTile =board.BoardTiles[player.currentTilePosition];
+        switch (curTile.tileType) {
+            case "MUSIC" -> {
+                try {
+                    Thread.sleep(5);
+                    curTile.MusicInput(input);
+                }
+                catch(Exception e) {
+                }
+                label3.setText(curTile.musicalBox.Controls);
+                label2.setText(curTile.musicalBox.curSong);
+                label1.setText(curTile.musicalBox.credits);
+            }
+            case "EMPTY" -> {
+                label3.setText("");
+                label2.setText("");
+                label1.setText(""); 
+            }
+        }
     }
 
     //Moves around where the player is on the board
     public static void MovementLogic(String input, JFrame window)
     {
         Display(window,player.MovementLogic(input, board));
-        CurrentTileAction();
+        CurrentTileAction(input);
     }
     
     
@@ -278,17 +316,5 @@ public static void main(String args[])
         Tiles curTile = board.BoardTiles[player.currentTilePosition];
     	if(curTile.tileType.equals("POPUP"))
     		popUpManager.toggleNewFrame(curTile.PopupGame);
-        else if(curTile.tileType.equals("MUSIC"))
-        {
-            popUpManager.toggleNewFrame(curTile.PopupGame);
-            /*/
-            if(curTile.musicalBox.countdownAmount <= 0)
-            {
-            curTile.beginMusic();
-            }
-            else
-            curTile.musicTimeRestart();
-            */
-        }
     }
 }

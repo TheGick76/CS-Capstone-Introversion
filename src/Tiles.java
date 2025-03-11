@@ -10,8 +10,10 @@ public class Tiles extends JPanel{
     //for music
     MusicBox musicalBox;
     JProgressBar musicDuration = new JProgressBar();
+    String credits;
+    String curSong;
     int musicTime = 60000;
-    int musicSong = 4;
+    int musicSong = 1;
     //for popups
     int PopupGame;
 
@@ -107,7 +109,12 @@ public class Tiles extends JPanel{
     }
     void Music()
     {
-        musicalBox = new MusicBox(musicTime, musicDuration, musicSong);
+        musicalBox = new MusicBox(musicTime, musicDuration, musicSong, credits, curSong);
+    }
+
+    void MusicInput(String input)
+    {
+        musicalBox.GetInput(input);
     }
 
     void TimingPong()
