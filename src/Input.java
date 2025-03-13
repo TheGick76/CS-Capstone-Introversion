@@ -5,6 +5,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
+import java.util.Arrays;
+import java.util.Set;
+
 import javax.swing.*;
 
 //Class input extend the contents of JFrame and implements KeyListener
@@ -13,9 +16,7 @@ class Input extends JFrame implements KeyListener{
     //Initialize our sockets and viarables
     public String InputString = "";
 
-    public Boolean Unfocused = true;
 
-    //Temp
     //Creates our socket which will connect to the server
     public static Socket inputSocket = null;
 
@@ -24,39 +25,54 @@ class Input extends JFrame implements KeyListener{
 
     //A string that will contain text that will have the status of the server connection
      private static String ServerStatus = "Server Status: Unconnected";
+     private static JButton ServerConnectButton = new JButton("Connect");
+     private static JFrame Frame;
+     private boolean Connected = false;
     
     //Images 
-    private final Image Image = new ImageIcon("R.jpg").getImage();
-    private final Image CenterImage = new ImageIcon("Horse.jpg").getImage();
+    private static Image Image = new ImageIcon("R.jpg").getImage();
+    private static Image CenterImage = new ImageIcon("Horse.jpg").getImage();
+    private static Image SpaceImage = new ImageIcon("Squib.jpg").getImage();
+
     
     //For rendering the images and their offsets
-    private final static float[] Render = {.25f,.25f,.25f,.25f,.25f}; 
-    private final static int[][] PicPos = new int[5][2];	// X cord , Y cord
-    private static int key = 5;
+    private static Image[] Pictures;
+    private static float[] Render; 
+    private static int[][] PicPos;
+    private static int key;
     
     //Locking inputs
     private static boolean CanReInput= true;
     private static char keyPressed = '&';
     private static boolean CanRePaint = true;
+    
+    private static Character[] Inputs = {'q', 'w', 'e', 'a', 's','d',' '};
 
 
     //Our main function
     public static void main(String args[])
     {
-        //Creates an instance of Input
-        //Class of Input has already implements key listners and JFrame stuff
-        JFrame Frame = new Input();
-        System.out.println("Test 1");
-        System.out.println(Frame.getTitle());
-        System.out.println("Test 1");
-        //PopUpManager.ConnectPop(Frame);
-        
+    	key = Inputs.length;
+    	
+    	Pictures = new Image[key];
+    	Arrays.fill(Pictures,Image); // Temp fill for pictures
+    	Pictures[4] = CenterImage;  // How pictures should be implemented
+    	Pictures[6] = SpaceImage;
+    	
+    	
+    	Render = new float[key];
+    	Arrays.fill(Render,0.25f);
+    	PicPos = new int[key][2];
+    	
+    	
+        Frame = new Input();
     }
     
     //Input constructor
     public Input()
     {
         //Set layout manager
+    	getContentPane().setBackground(Color.gray);
         setLayout(new BorderLayout());
         //Sets the title of the window
         setTitle("Inputs");
@@ -67,7 +83,7 @@ class Input extends JFrame implements KeyListener{
         setAlwaysOnTop(true);
         setAutoRequestFocus(true);
         //Sets the size of the window
-        setSize(500,500);
+        setSize(318,320);
         //sets window 10px off the top left corner
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize(); 
         setLocation(dim.width - getSize().width - 10, 10);
@@ -76,7 +92,7 @@ class Input extends JFrame implements KeyListener{
         //Adds Keylsitener to this instance
         addKeyListener(this);
         //Add button
-        JButton ServerConnectButton = new JButton("Connect");
+        
         //Creates and adds a new action listener
         ServerConnectButton.addActionListener((ActionEvent e) -> {
             //When clicked try to connect
@@ -104,8 +120,8 @@ class Input extends JFrame implements KeyListener{
             //Does work with LAN IPs!!!!
          inputSocket = new Socket("127.0.0.1", 1027);
          out = new DataOutputStream(inputSocket.getOutputStream());
-      //   ServerStatus.setText("Connected!");
-            ServerStatus = "Server Status: Connected!";
+         	Connected = true;
+         	Frame.remove(ServerConnectButton);
             repaint();
          }
          catch (IOException e) 
@@ -119,106 +135,42 @@ class Input extends JFrame implements KeyListener{
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
+        
+        
 
-        g.drawString(ServerStatus, 10, 100);
+        if(!Connected)
+        	g.drawString(ServerStatus, 10, 100);
+        else
+        {        
+	        for (int i = 0; i < 7 ; i ++)
+	        {
+	        	PicPos[i][0] = (100*(i%3) + 8);
+	        	PicPos[i][1] = (100*(i/3) + 30);
+	        }
+	       
+	        for(int i = 0;i < Inputs.length; i++)
+	        {
+	            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Render[i]));
+	            g.drawImage(Pictures[i], PicPos[i][0], PicPos[i][1], this);
+	        }
         
-        // Get the size of the window
-        int width = getWidth();
-        int height = getHeight();
-
-
-
-        //Draws image at center position [s]
-        int CenterImageWidth = CenterImage.getWidth(this);
-        int CenterImageHeight = CenterImage.getHeight(this);
-        int CenterImageXpos = width / 2 - CenterImageWidth / 2; // Center horizontally
-        int CenterImageYpos = height / 2 - CenterImageHeight / 2; // Center vertically
-        
-        PicPos[2][0] = CenterImageXpos;
-        PicPos[2][1] = CenterImageXpos;
-        
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Render[2]));
-        g.drawImage(CenterImage, CenterImageXpos, CenterImageYpos, this);
-
-        //Draws an image above the Center image [w]
-        int TopImageX = CenterImageXpos + (CenterImageWidth - Image.getWidth(this)) / 2;
-        int TopImageY = CenterImageYpos - Image.getHeight(this);
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Render[0]));
-        g.drawImage(Image, TopImageX, TopImageY, this);
-        
-        PicPos[0][0] = TopImageX;
-        PicPos[0][1] = TopImageY;
-        
-        //Draws an image to the Left of Center image [a]
-        int LeftImageX = CenterImageXpos - Image.getWidth(this);
-        int LeftImageY = CenterImageYpos + (CenterImageHeight - Image.getHeight(this)) / 2;
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Render[1]));
-        g.drawImage(Image, LeftImageX, LeftImageY, this);
-        
-        PicPos[1][0] = LeftImageX;
-        PicPos[1][1] = LeftImageY;
-        
-        //Draws an image to the Right of Center image [d]
-        int RightImageX = CenterImageXpos + Image.getWidth(this);
-        int RightImageY = CenterImageYpos + (CenterImageHeight - Image.getHeight(this)) / 2;
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Render[3]));
-        g.drawImage(Image, RightImageX, RightImageY, this);
-        
-        PicPos[3][0] = RightImageX;
-        PicPos[3][1] = RightImageY;
-        
-        //Draws an image to the Right of Center image [d]
-        int TopRightImageX = CenterImageXpos + Image.getWidth(this);
-        int TopRightImageY = CenterImageYpos - Image.getHeight(this) + (CenterImageHeight - Image.getHeight(this)) / 2;
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Render[4]));
-        g.drawImage(Image, TopRightImageX, TopRightImageY, this);
-        
-        PicPos[4][0] = RightImageX;
-        PicPos[4][1] = TopRightImageY;
+      }
     }
     
-    public void Render(String outputString)
+    public void Render(Character in)
     {
-
-    	// Variable = (condition) ? condition true : condition false;
-        Render[0] = outputString.equals("w")? 1.0f : 0.25f;
-        Render[1] = outputString.equals("a")? 1.0f : 0.25f;
-        Render[2] = outputString.equals("s")? 1.0f : 0.25f;
-        Render[3] = outputString.equals("d")? 1.0f : 0.25f;
-        Render[4] = outputString.equals("e")? 1.0f : 0.25f;
-
-        
-        //Will only repaint a certain area based off of what key got pressed
-        if((Render[0] == 1.0f || Render[1] == 1.0f || Render[2] == 1.0f || Render[3] == 1.0f || Render[4] == 1.0f) && CanRePaint)
-        {
-        	CanRePaint = false;
-        	if (Render[0] == 1.0f)
-        	{
-        		key = 0;
-        		repaint(PicPos[0][0],PicPos[0][1],100,100);
-        	}
-        	else if (Render[1] == 1.0f)
-        	{
-        		key = 1;
-        		repaint(PicPos[1][0],PicPos[1][1],100,100);
-        	}
-        	else if (Render[2] == 1.0f)
-        	{
-        		key = 2;
-        		repaint(PicPos[2][0],PicPos[2][1],100,100);
-        	}
-        	else if (Render[3] == 1.0f)
-        	{
-        		key = 3;
-        		repaint(PicPos[3][0],PicPos[3][1],100,100);
-        	}
-        	else if (Render[4] == 1.0f)
-        	{
-        		key = 4;
-        		repaint(PicPos[4][0],PicPos[4][1],100,100);
-        	}
-        }
-
+    	
+    	for(int i = 0 ; i < Inputs.length ; i++)
+    	{
+    		// Variable = (condition) ? condition true : condition false;
+    		Render[i] = in == Inputs[i]? 1.0f : 0.25f; 
+    		if(Render[i] == 1 && CanRePaint)
+    		{
+    			CanRePaint = false;
+        		key = i;
+        		repaint(PicPos[i][0],PicPos[i][1],Pictures[i].getWidth(null),Pictures[i].getHeight(null));
+    		}
+    	}
     }
  
 
@@ -228,19 +180,14 @@ class Input extends JFrame implements KeyListener{
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
+	@Override
     public void keyPressed(KeyEvent e) {
        // throw new UnsupportedOperationException("Not supported yet.");
-       //When key is pressed print the code of the key
-       // System.out.println(e.getKeyCode());
-       
         try
         {
         	//Only reads desired inputs, turns all other inputs to '&'
-          if(e.getKeyChar()=='w'||e.getKeyChar()=='a'||e.getKeyChar()=='s'||e.getKeyChar()=='d'||e.getKeyChar()=='e' || e.getKeyChar() == 'q'|| e.getKeyChar() == ' ')
-          {
-        	  if(CanReInput)
-        	  {
+          if(Arrays.asList(Inputs).contains(e.getKeyChar()) && CanReInput)
+          	{
         		  CanReInput = false; 
         		  keyPressed = e.getKeyChar();
                   if(!(e.getKeyChar() == ' '))
@@ -248,9 +195,9 @@ class Input extends JFrame implements KeyListener{
                   else
                   InputString = " ";
         		  out.writeUTF(InputString);  
-        		  Render(InputString);
-        	  }
-          }
+        		  Render(e.getKeyChar());
+        	}
+          
           else if(CanReInput)
         	  keyPressed = '&';
         }
@@ -270,10 +217,10 @@ class Input extends JFrame implements KeyListener{
     	  if(e.getKeyChar()==keyPressed && keyPressed != '&')
     	  {
             out.writeUTF("CLEAR");
-            Render("CLEAR");
+            Render(null);
             CanRePaint = true;
             CanReInput = true;
-            repaint(PicPos[key][0],PicPos[key][1],100,100);
+            repaint(PicPos[key][0],PicPos[key][1],Pictures[key].getWidth(null),Pictures[key].getHeight(null));
             keyPressed = '&';
     	  }
           if(e.getKeyChar() == KeyEvent.VK_ESCAPE)

@@ -54,6 +54,9 @@ class Output extends JFrame{
    // public static JLabel TimerDisplay = new JLabel("Timer: ");
    private final static JLabel CountdownDisplay = new JLabel("Countdown: 5:00");
    private final static JProgressBar EnergyBar = new JProgressBar();
+   
+   private static Output window;
+   private static boolean FoundInput;
 
  
     
@@ -63,17 +66,27 @@ class Output extends JFrame{
 public static void main(String args[])
     {
         //Creates instance of Output, which is the window
-        Output window = new Output();
+        window = new Output();
 
-        //Initialize display
-        Display(window, 0);
 
        //Try to Connect
        do { 
         //This loop actually wont constantly go while we are connected or searching,
         //it is only allowed to go when Connect(); finishes
            Connect(window, creationBool);
-       } while (true); 
+       } while (!FoundInput); 
+       
+       //Initialize display
+       Display(window, 0);
+       //Calls the thread to begin the music minigame
+       //Change to get what tile is music tile dynamically
+       board.BoardTiles[20].musicalBox.beginMusic();
+       //Try to Connect
+       do { 
+           //NEED TO MULTITHREAD
+           //Constatnly reads input from the inputs proccess
+           ReadInput(window);
+       } while (FoundInput); 
 
     }
 
@@ -103,10 +116,6 @@ public static void main(String args[])
 
         Thread Energy = new Thread(new Energy(player, board, EnergyBar, ScoreDisplay)) ;
 
-        //Calls the thread to begin the music minigame
-        //Change to get what tile is music tile dynamically
-        board.BoardTiles[20].musicalBox.beginMusic();
-
         Energy.start() ;
 
             //Confirming client has connected
@@ -116,16 +125,13 @@ public static void main(String args[])
 
             //Will direct flow of inputs from the server's spcket
             in = new DataInputStream(new BufferedInputStream(receiveingSocket.getInputStream()));
+            FoundInput = true;
         }
         //Error printing
         catch(IOException i)
         {
           System.out.println(i);
         }
-
-        //NEED TO MULTITHREAD
-        //Constatnly reads input from the inputs proccess
-        ReadInput(window);
     }
 
     //Constructor for Output
@@ -192,16 +198,7 @@ public static void main(String args[])
        statsPanel.add(label1);
        
 
-        
-
-
-
-        //Add tile panels
-        //Initializes colors of the tiles, make seperate function?
-        for(int i = 0; i < (Rows * Cols); i++)
-        {
-            BoardContainer.add(board.BoardTiles[i],i);
-        }
+      
         //sets window 10px off the top right corner
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize(); 
         setLocation(10, 10);
@@ -219,6 +216,7 @@ public static void main(String args[])
             try
                 {
                     //Store what the input was
+            	if(FoundInput && in != null)
                     outputString = in.readUTF();
                     
                  if(popUpManager.GetActive())
@@ -238,9 +236,7 @@ public static void main(String args[])
                         case " " -> {CurrentTileAction(outputString);}
                         case "q" -> {CurrentTileAction(outputString);}
                     	
-                    	
-                    	case "CLEAR" -> //If a button has been released
-                			System.out.println(outputString);
+
                     }
                 }
                 //If we couldn't read from sockets print error
@@ -253,6 +249,7 @@ public static void main(String args[])
                     in = null;
                     //clear our recieving socket
                     receiveingSocket = null;
+                    System.exit(0);
                 }
         }
         outputString = "";
@@ -262,6 +259,13 @@ public static void main(String args[])
     //Function updates visible tiles on movement
     public static void Display(JFrame window, int oldPos)
     {
+        //Add tile panels
+        //Initializes colors of the tiles, make seperate function?
+        for(int i = 0; i < (Rows * Cols); i++)
+        {
+            BoardContainer.add(board.BoardTiles[i],i);
+        }
+        
         //tiles that are NOT the player
         switch (board.BoardTiles[oldPos].tileType) {
             case "PERSON" -> board.BoardTiles[oldPos].backgroundSet("PERSON");
