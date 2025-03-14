@@ -6,8 +6,6 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 import java.util.Arrays;
-import java.util.Set;
-
 import javax.swing.*;
 
 //Class input extend the contents of JFrame and implements KeyListener
@@ -188,7 +186,7 @@ class Input extends JFrame implements KeyListener{
         	//Only reads desired inputs, turns all other inputs to '&'
           if(Arrays.asList(Inputs).contains(e.getKeyChar()) && CanReInput)
           	{
-        		  CanReInput = false; 
+        		//  CanReInput = false; 
         		  keyPressed = e.getKeyChar();
                   if(!(e.getKeyChar() == ' '))
         		  InputString = Character.toString(e.getKeyChar());
@@ -196,6 +194,7 @@ class Input extends JFrame implements KeyListener{
                   InputString = " ";
         		  out.writeUTF(InputString);  
         		  Render(e.getKeyChar());
+              //    CanReInput = false;
         	}
           
           else if(CanReInput)
@@ -213,6 +212,24 @@ class Input extends JFrame implements KeyListener{
       //  throw new UnsupportedOperationException("Not supported yet.");
       try
         {  
+            //This is jsut for the platformer mini game, sorry its messy
+            if(e.getKeyChar() == 'd')
+            {
+                out.writeUTF("DUP");
+            }
+            if(e.getKeyChar() == 's')
+            {
+                out.writeUTF("SUP");
+            }
+            if(e.getKeyChar() == 'a')
+            {
+                out.writeUTF("AUP");
+            }
+            if(e.getKeyChar() == 'w')
+            {
+                out.writeUTF("WUP");
+            }
+                
     	  //Only acts if a desired key was pressed then released
     	  if(e.getKeyChar()==keyPressed && keyPressed != '&')
     	  {

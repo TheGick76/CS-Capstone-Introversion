@@ -7,10 +7,6 @@ import javax.swing.*;
 //Class of Output whichextends the content of JFrame
 class Output extends JFrame{
 
-    //Go through and reprivate all these things, they shouldn't be public
-    //Id do it but im so lazy - Josh
-    //I didn't write this ^
-
     //Create a socket that will then be connected to server
     private static Socket receiveingSocket = null;
 
@@ -57,6 +53,8 @@ class Output extends JFrame{
    
    private static Output window;
    private static boolean FoundInput;
+
+   static boolean MovementLock;
 
  
     
@@ -235,6 +233,10 @@ public static void main(String args[])
 
                         case " " -> {CurrentTileAction(outputString);}
                         case "q" -> {CurrentTileAction(outputString);}
+                        case "WUP" -> MovementLock = false;
+                        case "AUP" -> MovementLock = false;
+                        case "SUP" -> MovementLock = false;
+                        case "DUP" -> MovementLock = false;
                     	
 
                     }
@@ -310,8 +312,12 @@ public static void main(String args[])
     //Moves around where the player is on the board
     public static void MovementLogic(String input, JFrame window)
     {
+        if(!MovementLock)
+        {
         Display(window,player.MovementLogic(input, board));
         CurrentTileAction(input);
+        MovementLock = true;
+        }
     }
     
     
@@ -319,6 +325,8 @@ public static void main(String args[])
     {
         Tiles curTile = board.BoardTiles[player.currentTilePosition];
     	if(curTile.tileType.equals("POPUP"))
-    		popUpManager.toggleNewFrame(curTile.PopupGame);
+    		{popUpManager.toggleNewFrame(curTile.PopupGame);
+                MovementLock = true;
+            }
     }
 }

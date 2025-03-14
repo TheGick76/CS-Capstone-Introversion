@@ -4,10 +4,11 @@ public class PopUpManager
 {		
 		private boolean Active = false;
 		private Himothy ref;
-		private JFrame CurrentFrame;
+		private JFrame CurrentFrame = null;
 		
-		private int Game;
+		private int Game = 0;
  		TileMove TMove = new TileMove();
+		Platformer platformer = new Platformer();
  		
  		PopUpManager(Himothy playerRef)
  		{
@@ -25,10 +26,12 @@ public class PopUpManager
             switch(Game)
             {
             	case 1-> TMove.kill();
+				case 2 -> platformer.kill();
             }
             Game = 0;
 			Active = false;
 			CurrentFrame = null;
+			
 		}
 	
 	
@@ -39,6 +42,7 @@ public class PopUpManager
            	switch(Game)
          	{
          	case 1 -> CurrentFrame = TMove.Start();
+			case 2 -> CurrentFrame = platformer.Start();
          	default -> System.out.println("Fail tile");
          	}
         	CurrentFrame.setVisible(true);
@@ -46,13 +50,21 @@ public class PopUpManager
         
         public void Input(String input)
         {
-        	if(input.compareTo("e")==0)
-         		KillFrame();
+        	
          	
              switch(Game)
              {
-             case 1-> Reward(TMove.GetInput(CurrentFrame, input));
+             case 1-> {Reward(TMove.GetInput(CurrentFrame, input));
+			if(input.compareTo("e")==0)
+         		KillFrame();
+			}
+			 case 2-> {Reward(platformer.GetInput(input));
+				if(platformer.i == 2)
+         		{KillFrame();}
+			 }
              }
+
+			 
         }
         
         private void Reward(int b)
@@ -61,13 +73,14 @@ public class PopUpManager
 	                switch(Game)
 	                {
 						case 1 -> ref.UpdateScore(TMove.Win);
-	                	
+	                	case 2-> ref.UpdateScore(platformer.Win);
 	                }
 	        	
 	        	else if(b==-1)
 	                switch(Game)
 	                {
 						case 1 -> ref.UpdateScore(TMove.Lose);
+						case 2-> ref.UpdateScore(platformer.Lose);
 	                }
 	        	if(b!=0)
 	        		KillFrame();
