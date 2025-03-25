@@ -2,20 +2,24 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.swing.*;
+import javax.swing.plaf.TreeUI;
 public class Countdown implements Runnable {
 
     public int threadNum ;
     public int countdownAmount ;
     public JLabel timerDisplay;
+    public boolean[] GameOutcome ;
 
-    public Countdown(int i, int countdownAmount, JLabel timerDisplay) {
+    public Countdown(int i, int countdownAmount, JLabel timerDisplay, boolean[] GameOutcome) {
         this.threadNum = i ;
         this.countdownAmount = countdownAmount ;
         this.timerDisplay = timerDisplay;
+        this.GameOutcome = GameOutcome ;
     }
 
     public void run() {
-        while (countdownAmount > 0) {
+        // Keeps going until countdown reaches 0 or game is over
+        while (countdownAmount > 0 && !GameOutcome[0]) {
             //System.out.println("Thread: " + threadNum + " Time: " + i) ;
             try {
                 Thread.sleep(1000) ;
@@ -31,6 +35,11 @@ public class Countdown implements Runnable {
             timerDisplay.setText("Countdown: " + timeString);
         }
 
-        timerDisplay.setText("Countdown has ended. ");
+        // Runs if countdown reaches 0, meaning game is over and player won
+        if (!GameOutcome[0]) {
+            GameOutcome[0] = true ;
+            GameOutcome[1] = true ;
+            timerDisplay.setText("Countdown has ended. ");
+        }
     }
 }

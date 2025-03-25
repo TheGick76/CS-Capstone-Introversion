@@ -43,18 +43,27 @@ class Output extends JFrame{
     //Change how these are assigned later
     private static int Rows = Board.Rows;
     private static int Cols = Board.Cols; 
-     // Mini windows manager
+    // Mini windows manager
     private final static PopUpManager popUpManager = new PopUpManager(player);
 
-    //The label that will display the current time, will send to Timer class
-   // public static JLabel TimerDisplay = new JLabel("Timer: ");
-   private final static JLabel CountdownDisplay = new JLabel("Countdown: 5:00");
-   private final static JProgressBar EnergyBar = new JProgressBar();
+    // The label that will display the current time, will send to Timer class
+    // public static JLabel TimerDisplay = new JLabel("Timer: ");
+    private final static JLabel CountdownDisplay = new JLabel("Countdown: 5:00");
+    private final static JProgressBar EnergyBar = new JProgressBar();
    
-   private static Output window;
-   private static boolean FoundInput;
+    private static Output window;
+    private static boolean FoundInput;
 
-   static boolean MovementLock;
+    static boolean MovementLock;
+
+    // Booleans to check if the game ended and if the player won
+    // GameOutcome[0] is if game ended
+    // GameOutcome[1] is if player won
+
+    private static boolean[] GameOutcome = {false, false} ;
+
+    private final static JLabel GameEnd = new JLabel() ;
+
 
  
     
@@ -67,24 +76,24 @@ public static void main(String args[])
         window = new Output();
 
 
-       //Try to Connect
-       do { 
-        //This loop actually wont constantly go while we are connected or searching,
-        //it is only allowed to go when Connect(); finishes
-           Connect(window, creationBool);
-       } while (!FoundInput); 
+        //Try to Connect
+        do { 
+            //This loop actually wont constantly go while we are connected or searching,
+            //it is only allowed to go when Connect(); finishes
+            Connect(window, creationBool);
+        } while (!FoundInput); 
        
-       //Initialize display
-       Display(window, 0);
-       //Calls the thread to begin the music minigame
-       //Change to get what tile is music tile dynamically
-       board.BoardTiles[20].musicalBox.beginMusic();
-       //Try to Connect
-       do { 
-           //NEED TO MULTITHREAD
-           //Constatnly reads input from the inputs proccess
-           ReadInput(window);
-       } while (FoundInput); 
+        //Initialize display
+        Display(window, 0);
+        //Calls the thread to begin the music minigame
+        //Change to get what tile is music tile dynamically
+        board.BoardTiles[20].musicalBox.beginMusic();
+        //Try to Connect
+        do { 
+            //NEED TO MULTITHREAD
+            //Constatnly reads input from the inputs proccess
+            ReadInput(window);
+        } while (FoundInput); 
 
     }
 
@@ -98,21 +107,21 @@ public static void main(String args[])
             //If its the first time the server is being created
             if(creationBool)
             {
-            //Create server at arbitray port
-            ss = new ServerSocket(1027);
-            creationBool = false;
+                //Create server at arbitray port
+                ss = new ServerSocket(1027);
+                creationBool = false;
             }
 
             //Wait for a client to connect
             receiveingSocket = ss.accept();
 
-        //Thread for timer
-     //   Thread timerThread = new Thread(new Timer(0, TimerDisplay));
-        Thread countdownThread = new Thread(new Countdown(0, 300, CountdownDisplay));
-       // timerThread.start();
+        // Thread for timer
+        // Thread timerThread = new Thread(new Timer(0, TimerDisplay));
+        Thread countdownThread = new Thread(new Countdown(0, 300, CountdownDisplay, GameOutcome));
+        // timerThread.start();
         countdownThread.start();
 
-        Thread Energy = new Thread(new Energy(player, board, EnergyBar, ScoreDisplay)) ;
+        Thread Energy = new Thread(new Energy(player, board, EnergyBar, ScoreDisplay, GameOutcome)) ;
 
         Energy.start() ;
 
@@ -128,7 +137,7 @@ public static void main(String args[])
         //Error printing
         catch(IOException i)
         {
-          System.out.println(i);
+            System.out.println(i);
         }
     }
 
@@ -161,10 +170,10 @@ public static void main(String args[])
 
         pack();
 
-        //Timer display
-      //  TimerDisplay.setSize(100,100);
+        // Timer display
+        // TimerDisplay.setSize(100,100);
         //TimerDisplay.setBounds(10, 100,100,100);
-       // statsPanel.add(TimerDisplay);
+        // statsPanel.add(TimerDisplay);
 
         CountdownDisplay.setSize(100,100);
         JPanel countdownpanel = new JPanel();
@@ -177,23 +186,24 @@ public static void main(String args[])
         EnergyBar.setStringPainted(true);
 
         EnergyBar.setSize(200,100);
-       // EnergyBar.setBounds(200, 100, 100,100);
+        // EnergyBar.setBounds(200, 100, 100,100);
 
-       //Buffers for display
-      // statsPanel.add(new JPanel());
-       //statsPanel.add(new JPanel());
+        //Buffers for display
+        // statsPanel.add(new JPanel());
+        //statsPanel.add(new JPanel());
 
-       JPanel energypanel = new JPanel();
+        JPanel energypanel = new JPanel();
         energypanel.add(EnergyBar);
         statsPanel.add(energypanel);
 
         JPanel scorepanel = new JPanel();
         scorepanel.add(ScoreDisplay);
+        scorepanel.add(GameEnd);
         statsPanel.add(scorepanel);
 
-       statsPanel.add(label3);
-       statsPanel.add(label2);
-       statsPanel.add(label1);
+        statsPanel.add(label3);
+        statsPanel.add(label2);
+        statsPanel.add(label1);
        
 
       
@@ -212,14 +222,23 @@ public static void main(String args[])
         {
             //try to take in inputs from the socket
             try
-                {
+            {
                     //Store what the input was
             	if(FoundInput && in != null)
                     outputString = in.readUTF();
                     
-                 if(popUpManager.GetActive())
-                	 popUpManager.Input(outputString);
-                 else
+                if(GameOutcome[0]) {
+                    if(GameOutcome[1])
+                        GameEnd.setText("You Win!");
+                    else
+                        GameEnd.setText("You Lose...");  
+
+                    if(popUpManager.GetActive())
+                        popUpManager.Input("e");
+                }
+                else if(popUpManager.GetActive())
+                	popUpManager.Input(outputString);
+                else
                     //Basic logic to prove inputs
                     switch(outputString)
                     {
@@ -239,8 +258,8 @@ public static void main(String args[])
                         case "DUP" -> MovementLock = false;
                     	
 
-                    }
-                }
+                    }          
+            }
                 //If we couldn't read from sockets print error
                 catch(IOException i)
                 {
@@ -281,8 +300,8 @@ public static void main(String args[])
             case "EMPTY" -> board.BoardTiles[oldPos].backgroundSet("EMPTY");
             default -> board.BoardTiles[oldPos].backgroundSet("");
         }
-       //The Player
-       board.BoardTiles[player.currentTilePosition].backgroundSet("PLAYER");
+        //The Player
+        board.BoardTiles[player.currentTilePosition].backgroundSet("PLAYER");
     }
 
     //Function for doing what the current tile action(s) is
