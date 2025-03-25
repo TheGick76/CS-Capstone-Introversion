@@ -117,11 +117,11 @@ public static void main(String args[])
 
         // Thread for timer
         // Thread timerThread = new Thread(new Timer(0, TimerDisplay));
-        Thread countdownThread = new Thread(new Countdown(0, 300, CountdownDisplay, GameOutcome));
+        Thread countdownThread = new Thread(new Countdown(0, 300, CountdownDisplay, GameOutcome, GameEnd));
         // timerThread.start();
         countdownThread.start();
 
-        Thread Energy = new Thread(new Energy(player, board, EnergyBar, ScoreDisplay, GameOutcome)) ;
+        Thread Energy = new Thread(new Energy(player, board, EnergyBar, ScoreDisplay, GameOutcome, GameEnd)) ;
 
         Energy.start() ;
 
@@ -227,14 +227,12 @@ public static void main(String args[])
             	if(FoundInput && in != null)
                     outputString = in.readUTF();
                     
-                if(GameOutcome[0]) {
-                    if(GameOutcome[1])
-                        GameEnd.setText("You Win!");
-                    else
-                        GameEnd.setText("You Lose...");  
-
+                // Stops inputs from affecting the board if the game is over
+                if(GameOutcome[0]) { 
+                    // Close any minigames in progress
                     if(popUpManager.GetActive())
                         popUpManager.Input("e");
+                    // More room for any other actions, such as restarting the game
                 }
                 else if(popUpManager.GetActive())
                 	popUpManager.Input(outputString);

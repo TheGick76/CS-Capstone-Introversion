@@ -7,14 +7,16 @@ public class Energy implements Runnable {
     public JProgressBar energy ;
     public JLabel score;
     public boolean[] GameOutcome ;
+    public JLabel GameEnd ;
 
-    Energy(Himothy player, Board board, JProgressBar energy, JLabel score, boolean[] GameOutcome) {
+    Energy(Himothy player, Board board, JProgressBar energy, JLabel score, boolean[] GameOutcome, JLabel GameEnd) {
 
         this.player = player ;
         this.board = board ;
         this.energy = energy ;
         this.score = score;
         this.GameOutcome = GameOutcome ;
+        this.GameEnd = GameEnd ;
     }
 
     public void run() {
@@ -85,6 +87,7 @@ public class Energy implements Runnable {
         if (!GameOutcome[0]) {
             GameOutcome[0] = true ;
             GameOutcome[1] = false ;
+            GameEnd.setText("You Lose...");
         }
 
     }

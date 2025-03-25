@@ -9,12 +9,14 @@ public class Countdown implements Runnable {
     public int countdownAmount ;
     public JLabel timerDisplay;
     public boolean[] GameOutcome ;
+    public JLabel GameEnd ;
 
-    public Countdown(int i, int countdownAmount, JLabel timerDisplay, boolean[] GameOutcome) {
+    public Countdown(int i, int countdownAmount, JLabel timerDisplay, boolean[] GameOutcome, JLabel GameEnd) {
         this.threadNum = i ;
         this.countdownAmount = countdownAmount ;
         this.timerDisplay = timerDisplay;
         this.GameOutcome = GameOutcome ;
+        this.GameEnd = GameEnd ;
     }
 
     public void run() {
@@ -40,6 +42,7 @@ public class Countdown implements Runnable {
             GameOutcome[0] = true ;
             GameOutcome[1] = true ;
             timerDisplay.setText("Countdown has ended. ");
+            GameEnd.setText("You Win!");
         }
     }
 }
