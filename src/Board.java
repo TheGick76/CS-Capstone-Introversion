@@ -47,6 +47,11 @@ public class Board {
             BoardTiles[i].credits = "";
             BoardTiles[i].curSong = "";
             }
+            case 25 ->
+            {
+                BoardTiles[i] = new Tiles(TileCount, "POPUP");
+                BoardTiles[i].PopupGame = 3;
+            }
          	default ->  BoardTiles[i] = new Tiles(TileCount, "EMPTY");
          	}
                 TileCount++;
