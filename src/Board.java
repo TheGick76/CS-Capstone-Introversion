@@ -47,7 +47,7 @@ public class Board {
          				BoardTiles[i].PopupGame = 1;}
          	case 16 -> {BoardTiles[i] = new Tiles(TileCount, "POPUP");
          				BoardTiles[i].PopupGame = 2;}
-         	case 200 -> {BoardTiles[i] = new Tiles(TileCount, "MUSIC");
+         	case 20 -> {BoardTiles[i] = new Tiles(TileCount, "MUSIC");
 				            BoardTiles[i].Music();
 				            BoardTiles[i].credits = "";
 				            BoardTiles[i].curSong = "";}

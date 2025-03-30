@@ -82,6 +82,7 @@ class Input extends JFrame implements KeyListener{
         	}
 
         }
+        
        
     }
     
@@ -265,6 +266,7 @@ class Input extends JFrame implements KeyListener{
                "Quit", JOptionPane.WARNING_MESSAGE);
          if (result  == JOptionPane.YES_OPTION)
            {
+        	 Connected = false;
             out.writeUTF("QUIT");
             this.dispose();
            }

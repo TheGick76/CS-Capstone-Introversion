@@ -92,7 +92,7 @@ public static void main(String args[])
         Display(window, 0);
         //Calls the thread to begin the music minigame
         //Change to get what tile is music tile dynamically
-        //board.BoardTiles[20].musicalBox.beginMusic();
+        board.BoardTiles[20].musicalBox.beginMusic();
         //Try to Connect
         do { 
             //NEED TO MULTITHREAD
@@ -423,6 +423,7 @@ public static void main(String args[])
 
         BoardContainer.revalidate();
         BoardContainer.repaint();
+        board.BoardTiles[20].musicalBox.beginMusic();
 
         for(Tiles T : Board.PersonTiles) {T.StartCountdown(GameOutcome);}
         
