@@ -30,6 +30,7 @@ public class Tiles extends JPanel{
         assignGame(tileType);
     }
 
+    //For tiles that have timer bars or notifications
     void specificTileGoodies(String s)
     {
         switch(s)
@@ -74,6 +75,10 @@ public class Tiles extends JPanel{
             case("MUSIC") ->
             {
                 setBackground(Color.YELLOW);
+            }
+            case("CRUSH") ->
+            {
+                setBackground(Color.PINK);
             }
             default->
             {

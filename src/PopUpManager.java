@@ -9,6 +9,7 @@ public class PopUpManager
 		private int Game = 0;
  		TileMove TMove = new TileMove();
 		Platformer platformer = new Platformer();
+		DatingSim Crush = new DatingSim();
  		
  		PopUpManager(Himothy playerRef)
  		{
@@ -27,6 +28,7 @@ public class PopUpManager
             {
             	case 1-> TMove.kill();
 				case 2 -> platformer.kill();
+				case 3 -> Crush.kill();
             }
             Game = 0;
 			Active = false;
@@ -43,6 +45,7 @@ public class PopUpManager
          	{
          	case 1 -> CurrentFrame = TMove.Start();
 			case 2 -> CurrentFrame = platformer.Start();
+			case 3 -> CurrentFrame = Crush.Start();
          	default -> System.out.println("Fail tile");
          	}
         	CurrentFrame.setVisible(true);
@@ -61,6 +64,12 @@ public class PopUpManager
 			 case 2-> {Reward(platformer.GetInput(input));
 				if(platformer.i == 2)
          		{KillFrame();}
+			 }
+			 case 3-> 
+			 {
+				Crush.GetInput(input);
+				if(input.compareTo("e")==0)
+         		KillFrame();
 			 }
              }
 
