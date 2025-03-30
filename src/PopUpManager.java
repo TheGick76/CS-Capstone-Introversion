@@ -67,7 +67,9 @@ public class PopUpManager
 			 }
 			 case 3-> 
 			 {
-				Crush.GetInput(input);
+				//Not using reward becuase it closes out our window
+				//Constatnly updating score so if player quits they get the appropriate score
+				ref.UpdateScore(Crush.GetInput(input));
 				if(input.compareTo("e")==0)
          		KillFrame();
 			 }
