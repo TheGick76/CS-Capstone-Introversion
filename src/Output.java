@@ -2,6 +2,8 @@
 import java.awt.*;
 import java.io.*;
 import java.net.*;
+import java.util.*;
+
 import javax.swing.*;
 
 //Class of Output whichextends the content of JFrame
@@ -59,8 +61,9 @@ class Output extends JFrame{
     // Booleans to check if the game ended and if the player won
     // GameOutcome[0] is if game ended
     // GameOutcome[1] is if player won
+    // GameOutcome[2] is if screen has updated to show game ended
 
-    private static boolean[] GameOutcome = {false, false} ;
+    private static boolean[] GameOutcome = {false, false , false} ;
 
     private final static JLabel GameEnd = new JLabel() ;
 
@@ -83,11 +86,13 @@ public static void main(String args[])
             Connect(window, creationBool);
         } while (!FoundInput); 
        
+    	for(Tiles T : Board.PersonTiles) {T.StartCountdown(GameOutcome);}
+    	
         //Initialize display
         Display(window, 0);
         //Calls the thread to begin the music minigame
         //Change to get what tile is music tile dynamically
-        board.BoardTiles[20].musicalBox.beginMusic();
+        //board.BoardTiles[20].musicalBox.beginMusic();
         //Try to Connect
         do { 
             //NEED TO MULTITHREAD
@@ -117,13 +122,22 @@ public static void main(String args[])
 
         // Thread for timer
         // Thread timerThread = new Thread(new Timer(0, TimerDisplay));
-        Thread countdownThread = new Thread(new Countdown(0, 300, CountdownDisplay, GameOutcome, GameEnd));
+        Thread countdownThread = new Thread(new Countdown(1,0, 300, CountdownDisplay, GameOutcome, GameEnd));
         // timerThread.start();
         countdownThread.start();
 
         Thread Energy = new Thread(new Energy(player, board, EnergyBar, ScoreDisplay, GameOutcome, GameEnd)) ;
 
         Energy.start() ;
+        
+        Thread StopGame = new Thread(new StopGame(GameOutcome, popUpManager, BoardContainer)) ;
+
+        StopGame.start() ;
+        
+        for(int i = 0; i < (Rows * Cols); i++)
+        {
+            BoardContainer.add(board.BoardTiles[i],i);
+        }
 
             //Confirming client has connected
             System.out.println("Client joined");
@@ -204,9 +218,7 @@ public static void main(String args[])
         statsPanel.add(label3);
         statsPanel.add(label2);
         statsPanel.add(label1);
-       
-
-      
+             
         //sets window 10px off the top right corner
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize(); 
         setLocation(10, 10);
@@ -222,17 +234,21 @@ public static void main(String args[])
         {
             //try to take in inputs from the socket
             try
-            {
+            {       	           	
                     //Store what the input was
             	if(FoundInput && in != null)
                     outputString = in.readUTF();
                     
+            	CheckPeopleMove();
+            	
                 // Stops inputs from affecting the board if the game is over
                 if(GameOutcome[0]) { 
                     // Close any minigames in progress
-                    if(popUpManager.GetActive())
-                        popUpManager.Input("e");
-                    // More room for any other actions, such as restarting the game
+                	// Restarts the game when player presses e
+                    if(outputString.compareTo("e") == 0){
+                        System.out.println("Restarting Game...");
+                        RestartGame() ;
+                    }
                 }
                 else if(popUpManager.GetActive())
                 	popUpManager.Input(outputString);
@@ -278,28 +294,31 @@ public static void main(String args[])
     //Function updates visible tiles on movement
     public static void Display(JFrame window, int oldPos)
     {
+    	board.PlayerMove(oldPos, player.currentTilePosition);
         //Add tile panels
         //Initializes colors of the tiles, make seperate function?
-        for(int i = 0; i < (Rows * Cols); i++)
-        {
-            BoardContainer.add(board.BoardTiles[i],i);
-        }
-        
-        //tiles that are NOT the player
-        switch (board.BoardTiles[oldPos].tileType) {
-            case "PERSON" -> board.BoardTiles[oldPos].backgroundSet("PERSON");
-            case "POPUP" -> board.BoardTiles[oldPos].backgroundSet("POPUP");
-            case "CAT" -> {
-                //Tiles that change when player moves over it
-                board.BoardTiles[oldPos].backgroundSet("EMPTY");
-                board.BoardTiles[oldPos].tileType = "EMPTY";
+    	
+    	for(Tiles T : board.BoardTiles)
+    	{
+            //tiles that are NOT the player
+            switch (T.tileType) {
+                case "PERSON" -> board.BoardTiles[T.tileNumber].backgroundSet("PERSON");
+                case "POPUP" -> board.BoardTiles[T.tileNumber].backgroundSet("POPUP");
+                case "MUSIC" -> board.BoardTiles[T.tileNumber].backgroundSet("MUSIC");
+                case "EMPTY" -> board.BoardTiles[T.tileNumber].backgroundSet("EMPTY");
+                case "CAT" -> {
+                    //Tiles that change when player moves over it
+                	if(oldPos == T.tileNumber)
+                	{               		
+                    board.BoardTiles[T.tileNumber].backgroundSet("EMPTY");
+                    board.BoardTiles[T.tileNumber].tileType = "EMPTY";
+                	}
+                }
+                default -> board.BoardTiles[T.tileNumber].backgroundSet("");
             }
-            case "MUSIC" -> board.BoardTiles[oldPos].backgroundSet("MUSIC");
-            case "EMPTY" -> board.BoardTiles[oldPos].backgroundSet("EMPTY");
-            default -> board.BoardTiles[oldPos].backgroundSet("");
-        }
-        //The Player
-        board.BoardTiles[player.currentTilePosition].backgroundSet("PLAYER");
+            board.BoardTiles[player.currentTilePosition].backgroundSet("PLAYER");
+    	}
+    
     }
 
     //Function for doing what the current tile action(s) is
@@ -318,6 +337,7 @@ public static void main(String args[])
                 label2.setText(curTile.musicalBox.curSong);
                 label1.setText(curTile.musicalBox.credits);
             }
+            case "PERSON" -> System.out.println(curTile.Count.Play);
             case "EMPTY" -> {
                 label3.setText("");
                 label2.setText("");
@@ -346,4 +366,68 @@ public static void main(String args[])
                 MovementLock = true;
             }
     }
+    
+    public static void CheckPeopleMove()
+    {
+    	for (int i = 0; i < board.PersonTiles.size();i++) {
+    		Tiles T = board.PersonTiles.get(i);
+            if(!T.Count.Play)
+            {
+            	board.SwapTiles(board.PersonTiles.indexOf(T) , player.currentTilePosition , GameOutcome);
+            	Display(window,player.currentTilePosition);
+            	T.StartCountdown(GameOutcome);
+            }
+        }
+    }
+    
+    public static void RestartGame()
+    {
+
+        // Reset GameOutcome
+        GameOutcome[0] = false ;
+        GameOutcome[1] = false ;
+        GameOutcome[2] = false ;
+        GameEnd.setText("");
+
+        // Reset himothy, score, and energy
+
+        int oldPos = player.currentTilePosition ;
+
+        player.rowPos = 0 ;
+        player.colPos = 0 ;
+        player.currentTilePosition = 0 ;
+        player.score = 0 ;
+        player.UpdateScore(0);
+        EnergyBar.setValue(100);
+
+        // Reset the countdown and energy threads
+        Thread countdownThread = new Thread(new Countdown(1,0, 300, CountdownDisplay, GameOutcome, GameEnd));
+        countdownThread.start();
+
+        Thread Energy = new Thread(new Energy(player, board, EnergyBar, ScoreDisplay, GameOutcome, GameEnd)) ;
+        Energy.start() ;
+
+        // Reset board and displays everything
+
+        BoardContainer.removeAll();
+        board.PersonTiles.clear();
+        board.EmptyTiles.clear();
+
+        board.BoardTiles = new Tiles[Rows * Cols] ;
+        board.GameBoard();
+
+        for(int i = 0; i < (Rows * Cols); i++)
+        {
+            BoardContainer.add(board.BoardTiles[i],i);
+        }
+
+        BoardContainer.revalidate();
+        BoardContainer.repaint();
+
+        for(Tiles T : Board.PersonTiles) {T.StartCountdown(GameOutcome);}
+        
+        Display(window, oldPos) ;
+
+    }
+
 }

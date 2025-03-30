@@ -44,7 +44,7 @@ public class Energy implements Runnable {
                 }
 
                 case("PERSON") -> {
-                    extraEnergyChange = 2 ;
+                    extraEnergyChange = 20 ;
                 }
 
                 case("CAT") -> {
@@ -87,7 +87,7 @@ public class Energy implements Runnable {
         if (!GameOutcome[0]) {
             GameOutcome[0] = true ;
             GameOutcome[1] = false ;
-            GameEnd.setText("You Lose...");
+            GameEnd.setText("You Lose... Press e to restart." );
         }
 
     }
