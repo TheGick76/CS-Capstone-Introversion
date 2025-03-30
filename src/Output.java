@@ -2,8 +2,7 @@
 import java.awt.*;
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 
 import javax.swing.*;
 
@@ -62,8 +61,9 @@ class Output extends JFrame{
     // Booleans to check if the game ended and if the player won
     // GameOutcome[0] is if game ended
     // GameOutcome[1] is if player won
+    // GameOutcome[2] is if screen has updated to show game ended
 
-    private static boolean[] GameOutcome = {false, false} ;
+    private static boolean[] GameOutcome = {false, false , false} ;
 
     private final static JLabel GameEnd = new JLabel() ;
 
@@ -129,6 +129,10 @@ public static void main(String args[])
         Thread Energy = new Thread(new Energy(player, board, EnergyBar, ScoreDisplay, GameOutcome, GameEnd)) ;
 
         Energy.start() ;
+        
+        Thread StopGame = new Thread(new StopGame(GameOutcome, popUpManager, BoardContainer)) ;
+
+        StopGame.start() ;
         
         for(int i = 0; i < (Rows * Cols); i++)
         {
@@ -240,9 +244,11 @@ public static void main(String args[])
                 // Stops inputs from affecting the board if the game is over
                 if(GameOutcome[0]) { 
                     // Close any minigames in progress
-                    if(popUpManager.GetActive())
-                        popUpManager.Input("e");
-                    // More room for any other actions, such as restarting the game
+                	// Restarts the game when player presses e
+                    if(outputString.compareTo("e") == 0){
+                        System.out.println("Restarting Game...");
+                        RestartGame() ;
+                    }
                 }
                 else if(popUpManager.GetActive())
                 	popUpManager.Input(outputString);
@@ -373,4 +379,51 @@ public static void main(String args[])
             }
         }
     }
+    
+    public static void RestartGame()
+    {
+
+        // Reset GameOutcome
+        GameOutcome[0] = false ;
+        GameOutcome[1] = false ;
+        GameOutcome[2] = false ;
+        GameEnd.setText("");
+
+        // Reset himothy, score, and energy
+
+        int oldPos = player.currentTilePosition ;
+
+        player.rowPos = 0 ;
+        player.colPos = 0 ;
+        player.currentTilePosition = 0 ;
+        player.score = 0 ;
+        player.UpdateScore(0);
+        EnergyBar.setValue(100);
+
+        // Reset the countdown and energy threads
+        Thread countdownThread = new Thread(new Countdown(1,0, 300, CountdownDisplay, GameOutcome, GameEnd));
+        countdownThread.start();
+
+        Thread Energy = new Thread(new Energy(player, board, EnergyBar, ScoreDisplay, GameOutcome, GameEnd)) ;
+        Energy.start() ;
+
+        // Reset board and displays everything
+
+        BoardContainer.removeAll();
+
+        board.BoardTiles = new Tiles[Rows * Cols] ;
+        board.GameBoard();
+
+        for(int i = 0; i < (Rows * Cols); i++)
+        {
+            BoardContainer.add(board.BoardTiles[i],i);
+        }
+
+        BoardContainer.revalidate();
+        BoardContainer.repaint();
+
+        Display(window, oldPos) ;
+
+    }
+
 }
