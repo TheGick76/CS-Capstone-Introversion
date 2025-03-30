@@ -23,10 +23,11 @@ public class Countdown implements Runnable {
         this.GameEnd = GameEnd ;
     }
     
-    public Countdown(int Thread , int i, int countdownAmount) {
+    public Countdown(int Thread , int i, int countdownAmount ,  boolean[] GameOutcome) {
     	this.Timer = Thread;
         this.threadNum = i ;
         this.countdownAmount = countdownAmount ;
+        this.GameOutcome = GameOutcome ;
         this.Play = false;
     }
 
@@ -70,7 +71,7 @@ public class Countdown implements Runnable {
     public void TileCountDown() {
     	Play = true;
         // Keeps going until countdown reaches 0 or game is over
-        while (countdownAmount > 0) {
+        while (countdownAmount > 0 && !GameOutcome[0]) {
             //System.out.println("Thread: " + threadNum + " Time: " + i) ;
             try {
                 Thread.sleep(1000) ;

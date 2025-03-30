@@ -86,7 +86,7 @@ public static void main(String args[])
             Connect(window, creationBool);
         } while (!FoundInput); 
        
-    	for(Tiles T : Board.PersonTiles) {T.StartCountdown();}
+    	for(Tiles T : Board.PersonTiles) {T.StartCountdown(GameOutcome);}
     	
         //Initialize display
         Display(window, 0);
@@ -373,9 +373,9 @@ public static void main(String args[])
     		Tiles T = board.PersonTiles.get(i);
             if(!T.Count.Play)
             {
-            	board.SwapTiles(board.PersonTiles.indexOf(T) , player.currentTilePosition);
+            	board.SwapTiles(board.PersonTiles.indexOf(T) , player.currentTilePosition , GameOutcome);
             	Display(window,player.currentTilePosition);
-            	T.StartCountdown();
+            	T.StartCountdown(GameOutcome);
             }
         }
     }
@@ -410,6 +410,8 @@ public static void main(String args[])
         // Reset board and displays everything
 
         BoardContainer.removeAll();
+        board.PersonTiles.clear();
+        board.EmptyTiles.clear();
 
         board.BoardTiles = new Tiles[Rows * Cols] ;
         board.GameBoard();
@@ -422,6 +424,8 @@ public static void main(String args[])
         BoardContainer.revalidate();
         BoardContainer.repaint();
 
+        for(Tiles T : Board.PersonTiles) {T.StartCountdown(GameOutcome);}
+        
         Display(window, oldPos) ;
 
     }

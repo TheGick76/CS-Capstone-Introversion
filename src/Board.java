@@ -83,7 +83,7 @@ public class Board {
     }
     
     // Swapping Person Tile and Empty Tiles
-    void SwapTiles(int PersonPos , int playerPos)
+    void SwapTiles(int PersonPos , int playerPos , boolean[] GameOutcome)
     {
     	// Removes Tile From Person List
     	int PersonTileNum = PersonTiles.get(PersonPos).tileNumber;
@@ -97,7 +97,7 @@ public class Board {
     	//setting Paramters for new tiles
     	BoardTiles[NewPlaceNum].tileType = "PERSON";
     	BoardTiles[NewPlaceNum].Timer = BoardTiles[PersonTileNum].Timer;
-    	BoardTiles[NewPlaceNum].StartCountdown();
+    	BoardTiles[NewPlaceNum].StartCountdown(GameOutcome);
     	PersonTiles.add(BoardTiles[NewPlaceNum]);
     	
     	//Setting Paramater for the old tile

@@ -7,7 +7,7 @@ public class Tiles extends JPanel{
 
     //What tile number is it
     int tileNumber;
-    Countdown Count = new Countdown(0,0, 0);
+    Countdown Count = new Countdown(0,0,0, null);
     //for music
     MusicBox musicalBox;
     JProgressBar musicDuration = new JProgressBar();
@@ -44,10 +44,10 @@ public class Tiles extends JPanel{
     }
     
     
-    void StartCountdown()
+    void StartCountdown(boolean[] GameOutcome)
     {
     	
-    	Count = new Countdown(2,0, Timer);
+    	Count = new Countdown(2,0, Timer ,GameOutcome);
     	Thread C = new Thread(Count);
     	C.start();
     }
