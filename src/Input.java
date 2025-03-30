@@ -25,7 +25,7 @@ class Input extends JFrame implements KeyListener{
      private static String ServerStatus = "Server Status: Unconnected";
      private static JButton ServerConnectButton = new JButton("Connect");
      private static JFrame Frame;
-     private boolean Connected = false;
+     private static boolean Connected = false;
     
     //Images 
     private static Image Image = new ImageIcon("R.jpg").getImage();
@@ -64,6 +64,25 @@ class Input extends JFrame implements KeyListener{
     	
     	
         Frame = new Input();
+       
+        while(!Connected) {
+            try {
+                Thread.sleep(1000) ;
+            } catch (InterruptedException e) {
+                System.out.println(e);
+            }
+        }
+        while(Connected)
+        {
+            try {Thread.sleep(1000) ; } catch (InterruptedException e) {}
+            
+        	if(keyPressed == '&')
+        	{
+        		try {out.writeUTF("v");} catch (IOException e) {}
+        	}
+
+        }
+       
     }
     
     //Input constructor

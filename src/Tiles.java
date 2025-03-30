@@ -7,6 +7,7 @@ public class Tiles extends JPanel{
 
     //What tile number is it
     int tileNumber;
+    Countdown Count = new Countdown(0,0, 0);
     //for music
     MusicBox musicalBox;
     JProgressBar musicDuration = new JProgressBar();
@@ -16,6 +17,8 @@ public class Tiles extends JPanel{
     int musicSong = 1;
     //for popups
     int PopupGame;
+    
+    int Timer;
 
     //"Empty" "People" "Cat" "Ect."
     String tileType;
@@ -28,6 +31,25 @@ public class Tiles extends JPanel{
         specificTileGoodies(tileType);
         backgroundSet(tileType);
         assignGame(tileType);
+    }
+    
+    Tiles(int tileNum, String tileType , int T)
+    {
+        this.tileNumber = tileNum;
+        this.tileType = tileType;
+        this.Timer = T;
+        specificTileGoodies(tileType);
+        backgroundSet(tileType);
+        assignGame(tileType);
+    }
+    
+    
+    void StartCountdown()
+    {
+    	
+    	Count = new Countdown(2,0, Timer);
+    	Thread C = new Thread(Count);
+    	C.start();
     }
 
     //For tiles that have timer bars or notifications
