@@ -43,14 +43,15 @@ public class Board {
          	case 0 -> BoardTiles[i] = new Tiles(TileCount, "PLAYER");
          	case 3 -> BoardTiles[i] = new Tiles(TileCount, "CAT");
          	case 6 ->BoardTiles[i] = new Tiles(TileCount, "PERSON" , 5);
-         	case 12 -> {BoardTiles[i] = new Tiles(TileCount, "POPUP");
+         	case 12 -> {BoardTiles[i] = new Tiles(TileCount, "POPUP" , 4);
          				BoardTiles[i].PopupGame = 1;}
          	case 16 -> {BoardTiles[i] = new Tiles(TileCount, "POPUP");
          				BoardTiles[i].PopupGame = 2;}
-         	case 20 -> {BoardTiles[i] = new Tiles(TileCount, "MUSIC");
+         /*	case 20 -> {BoardTiles[i] = new Tiles(TileCount, "MUSIC");
 				            BoardTiles[i].Music();
 				            BoardTiles[i].credits = "";
 				            BoardTiles[i].curSong = "";}
+		*/
          	case 22 -> BoardTiles[i] = new Tiles(TileCount, "PERSON" , 3);
             case 25 ->{BoardTiles[i] = new Tiles(TileCount, "POPUP");
                 	   BoardTiles[i].PopupGame = 3;}

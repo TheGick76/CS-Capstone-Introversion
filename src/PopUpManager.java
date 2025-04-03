@@ -5,7 +5,7 @@ public class PopUpManager
 		private boolean Active = false;
 		private Himothy ref;
 		private JFrame CurrentFrame = null;
-		
+		private boolean Finished = false;
 		private int Game = 0;
  		TileMove TMove = new TileMove();
 		Platformer platformer = new Platformer();
@@ -19,6 +19,11 @@ public class PopUpManager
 		public boolean GetActive()
 		{
 			return Active;
+		}
+		
+		public boolean GameFinished()
+		{
+			return Finished;
 		}
 		
 		public void KillFrame()
@@ -41,6 +46,7 @@ public class PopUpManager
         {
         	this.Game = game;
         	Active = true;
+        	Finished = false;
            	switch(Game)
          	{
          	case 1 -> CurrentFrame = TMove.Start();
@@ -51,7 +57,7 @@ public class PopUpManager
         	CurrentFrame.setVisible(true);
         }
         
-        public void Input(String input)
+        public boolean Input(String input)
         {
         	
          	
@@ -71,9 +77,14 @@ public class PopUpManager
 				//Constatnly updating score so if player quits they get the appropriate score
 				ref.UpdateScore(Crush.GetInput(input));
 				if(input.compareTo("e")==0)
-         		KillFrame();
+				{
+					// get status of Crush and make 'Finished' equal to 
+					//if the game is done or not so tile goes on cool down
+					KillFrame();
+				}
 			 }
              }
+         return Finished;
 
 			 
         }
@@ -94,6 +105,9 @@ public class PopUpManager
 						case 2-> ref.UpdateScore(platformer.Lose);
 	                }
 	        	if(b!=0)
+	        	{
+	        		Finished = true;
 	        		KillFrame();
+	        	}
         }
 }

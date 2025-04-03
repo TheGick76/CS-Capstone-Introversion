@@ -92,7 +92,11 @@ public static void main(String args[])
         Display(window, 0);
         //Calls the thread to begin the music minigame
         //Change to get what tile is music tile dynamically
-        board.BoardTiles[20].musicalBox.beginMusic();
+    	for(Tiles T : board.BoardTiles)
+    	{
+    		if(T.tileType.compareTo("MUSIC")==0)
+    			T.musicalBox.beginMusic();
+    	}
         //Try to Connect
         do { 
             //NEED TO MULTITHREAD
@@ -221,7 +225,7 @@ public static void main(String args[])
              
         //sets window 10px off the top right corner
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize(); 
-        setLocation(10, 10);
+        setLocation(900, 450);
         //sets window visible
         setVisible(true);
     }
@@ -250,8 +254,14 @@ public static void main(String args[])
                         RestartGame() ;
                     }
                 }
+                
+                //When calling popup manager, if the game is complete the popup disappers if a timer is connected
                 else if(popUpManager.GetActive())
-                	popUpManager.Input(outputString);
+                {                	
+                	if(popUpManager.Input(outputString))
+                		board.BoardTiles[player.currentTilePosition].StartCountdown(GameOutcome);
+                }
+
                 else
                     //Basic logic to prove inputs
                     switch(outputString)
@@ -303,9 +313,9 @@ public static void main(String args[])
             //tiles that are NOT the player
             switch (T.tileType) {
                 case "PERSON" -> board.BoardTiles[T.tileNumber].backgroundSet("PERSON");
-                case "POPUP" -> board.BoardTiles[T.tileNumber].backgroundSet("POPUP");
                 case "MUSIC" -> board.BoardTiles[T.tileNumber].backgroundSet("MUSIC");
                 case "EMPTY" -> board.BoardTiles[T.tileNumber].backgroundSet("EMPTY");
+                case "POPUP" ->board.BoardTiles[T.tileNumber].backgroundSet(!board.BoardTiles[T.tileNumber].Count.Play ? "POPUP" : "EMPTY");
                 case "CAT" -> {
                     //Tiles that change when player moves over it
                 	if(oldPos == T.tileNumber)
@@ -361,7 +371,7 @@ public static void main(String args[])
     public static void SelectTile()
     {
         Tiles curTile = board.BoardTiles[player.currentTilePosition];
-    	if(curTile.tileType.equals("POPUP"))
+    	if(curTile.tileType.equals("POPUP") && !curTile.Count.Play)
     		{popUpManager.toggleNewFrame(curTile.PopupGame);
                 MovementLock = true;
             }
