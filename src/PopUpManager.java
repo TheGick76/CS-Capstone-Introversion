@@ -6,6 +6,7 @@ public class PopUpManager
 		private Himothy ref;
 		private JFrame CurrentFrame = null;
 		private boolean Finished = false;
+		private boolean MovementLock = false;
 		private int Game = 0;
  		TileMove TMove = new TileMove();
 		Platformer platformer = new Platformer();
@@ -63,7 +64,15 @@ public class PopUpManager
          	
              switch(Game)
              {
-             case 1-> {Reward(TMove.GetInput(CurrentFrame, input));
+             case 1-> {
+				if(!MovementLock && input.matches("w|a|s|d")){
+				Reward(TMove.GetInput(CurrentFrame, input));
+					MovementLock = true;
+				}
+				else if(input.matches("WUP|SUP|AUP|DUP"))
+				{
+					MovementLock = false;
+				}
 			if(input.compareTo("e")==0)
          		KillFrame();
 			}
