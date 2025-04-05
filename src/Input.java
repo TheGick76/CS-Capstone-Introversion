@@ -237,17 +237,21 @@ class Input extends JFrame implements KeyListener{
             {
                 out.writeUTF("DUP");
             }
-            if(e.getKeyChar() == 's')
+            else if(e.getKeyChar() == 's')
             {
                 out.writeUTF("SUP");
             }
-            if(e.getKeyChar() == 'a')
+            else if(e.getKeyChar() == 'a')
             {
                 out.writeUTF("AUP");
             }
-            if(e.getKeyChar() == 'w')
+            else if(e.getKeyChar() == 'w')
             {
                 out.writeUTF("WUP");
+            }
+            else if(e.getKeyChar() == 'e')
+            {
+                out.writeUTF("EUP");
             }
                 
     	  //Only acts if a desired key was pressed then released

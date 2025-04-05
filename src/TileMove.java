@@ -1,11 +1,8 @@
 import java.awt.*;
  import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-
 import javax.swing.JFrame;
  
  public class TileMove {
@@ -22,6 +19,8 @@ import javax.swing.JFrame;
  	
  	ArrayList<JFrame> AllFrame = new ArrayList<>();
  	Random R = new Random();
+
+	boolean MovementLock = false;
  	
  	JFrame Start()
  	{
@@ -86,13 +85,24 @@ import javax.swing.JFrame;
  	
  	int GetInput(JFrame CurrentFrame,String input)
  	{
+		if(!MovementLock)
+        {
          switch(input)
          {
-      	case "w" -> {if(CurrentFrame.getY()-50 > -25)CurrentFrame.setLocation(CurrentFrame.getX(), CurrentFrame.getY() - 50); break;}
-      	case "a" -> {if(CurrentFrame.getX()-50 > -25)CurrentFrame.setLocation(CurrentFrame.getX()-50, CurrentFrame.getY());break;}
-      	case "s" -> {if(CurrentFrame.getY()+50 < gridCount*gridsize)CurrentFrame.setLocation(CurrentFrame.getX(), CurrentFrame.getY() + 50);break;}
-      	case "d" -> {if(CurrentFrame.getX()+50 < gridCount*gridsize)CurrentFrame.setLocation(CurrentFrame.getX()+50, CurrentFrame.getY());break;}
+      	case "w" -> {if(CurrentFrame.getY()-50 > -25)CurrentFrame.setLocation(CurrentFrame.getX(), CurrentFrame.getY() - 50); MovementLock = true; break;}
+      	case "a" -> {if(CurrentFrame.getX()-50 > -25)CurrentFrame.setLocation(CurrentFrame.getX()-50, CurrentFrame.getY());MovementLock = true;break;}
+      	case "s" -> {if(CurrentFrame.getY()+50 < gridCount*gridsize)CurrentFrame.setLocation(CurrentFrame.getX(), CurrentFrame.getY() + 50);MovementLock = true;break;}
+      	case "d" -> {if(CurrentFrame.getX()+50 < gridCount*gridsize)CurrentFrame.setLocation(CurrentFrame.getX()+50, CurrentFrame.getY());MovementLock = true;break;}
  		 }
+		}
+		else
+		switch(input)
+		{
+			case "WUP" -> MovementLock = false;
+			case "AUP" -> MovementLock = false;
+			case "SUP" -> MovementLock = false;
+			case "DUP" -> MovementLock = false;
+		}
          posX = CurrentFrame.getX()+(int)(CurrentFrame.getWidth()*0.5f);
          posY = CurrentFrame.getY()+(int)(CurrentFrame.getHeight()*0.5f);
          

@@ -2,8 +2,6 @@
 import java.awt.*;
 import java.io.*;
 import java.net.*;
-import java.util.*;
-
 import javax.swing.*;
 
 //Class of Output whichextends the content of JFrame
@@ -57,6 +55,7 @@ class Output extends JFrame{
     private static boolean FoundInput;
 
     static boolean MovementLock;
+    static boolean PopupLock = false;
 
     // Booleans to check if the game ended and if the player won
     // GameOutcome[0] is if game ended
@@ -256,10 +255,13 @@ public static void main(String args[])
                 }
                 
                 //When calling popup manager, if the game is complete the popup disappers if a timer is connected
-                else if(popUpManager.GetActive())
+                else if(popUpManager.GetActive() && !PopupLock)
                 {                	
                 	if(popUpManager.Input(outputString))
+                    {
                 		board.BoardTiles[player.currentTilePosition].StartCountdown(GameOutcome);
+                        PopupLock = true;
+                    }
                 }
 
                 else
@@ -272,7 +274,10 @@ public static void main(String args[])
                     	case "s" -> {MovementLogic(outputString, window);}
                     	case "d" -> {MovementLogic(outputString, window);}
                     	
-                    	case "e" -> {SelectTile();}
+                    	case "e" -> {SelectTile();
+                            PopupLock = true;
+                            
+                        }
 
                         case " " -> {CurrentTileAction(outputString);}
                         case "q" -> {CurrentTileAction(outputString);}
@@ -280,6 +285,7 @@ public static void main(String args[])
                         case "AUP" -> MovementLock = false;
                         case "SUP" -> MovementLock = false;
                         case "DUP" -> MovementLock = false;
+                        case "EUP" -> PopupLock = false;
                     	
 
                     }          
@@ -371,9 +377,10 @@ public static void main(String args[])
     public static void SelectTile()
     {
         Tiles curTile = board.BoardTiles[player.currentTilePosition];
-    	if(curTile.tileType.equals("POPUP") && !curTile.Count.Play)
+    	if(curTile.tileType.equals("POPUP") && !curTile.Count.Play && !PopupLock)
     		{popUpManager.toggleNewFrame(curTile.PopupGame);
                 MovementLock = true;
+                PopupLock = true;
             }
     }
     
