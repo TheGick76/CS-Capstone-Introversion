@@ -74,7 +74,7 @@ class Input extends JFrame implements KeyListener{
         }
         while(Connected)
         {
-            try {Thread.sleep(1000) ; } catch (InterruptedException e) {}
+            try {Thread.sleep(250) ; } catch (InterruptedException e) {}
             
         	if(keyPressed == '&')
         	{

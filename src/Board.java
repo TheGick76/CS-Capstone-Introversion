@@ -55,6 +55,8 @@ public class Board {
          	case 22 -> BoardTiles[i] = new Tiles(TileCount, "PERSON" , 3);
             case 25 ->{BoardTiles[i] = new Tiles(TileCount, "POPUP");
                 	   BoardTiles[i].PopupGame = 3;}
+         	case 28 -> {BoardTiles[i] = new Tiles(TileCount, "POPUP");
+				BoardTiles[i].PopupGame = 4;}
          	default ->  {
          		BoardTiles[i] = new Tiles(TileCount, "EMPTY");
          		EmptyTiles.add(BoardTiles[i]);

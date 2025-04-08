@@ -125,7 +125,7 @@ public static void main(String args[])
 
         // Thread for timer
         // Thread timerThread = new Thread(new Timer(0, TimerDisplay));
-        Thread countdownThread = new Thread(new Countdown(1,0, 300, CountdownDisplay, GameOutcome, GameEnd));
+        Thread countdownThread = new Thread(new Countdown(1, 300, CountdownDisplay, GameOutcome, GameEnd));
         // timerThread.start();
         countdownThread.start();
 
@@ -418,7 +418,7 @@ public static void main(String args[])
         EnergyBar.setValue(100);
 
         // Reset the countdown and energy threads
-        Thread countdownThread = new Thread(new Countdown(1,0, 300, CountdownDisplay, GameOutcome, GameEnd));
+        Thread countdownThread = new Thread(new Countdown(1, 300, CountdownDisplay, GameOutcome, GameEnd));
         countdownThread.start();
 
         Thread Energy = new Thread(new Energy(player, board, EnergyBar, ScoreDisplay, GameOutcome, GameEnd)) ;

@@ -5,7 +5,6 @@ import javax.swing.*;
 import javax.swing.plaf.TreeUI;
 public class Countdown implements Runnable {
 
-	public int Timer;
     public int threadNum ;
     public int countdownAmount ;
     public JLabel timerDisplay;
@@ -14,8 +13,7 @@ public class Countdown implements Runnable {
     
     public boolean Play;
 
-    public Countdown(int Thread,int i, int countdownAmount, JLabel timerDisplay, boolean[] GameOutcome, JLabel GameEnd) {
-        this.Timer = Thread;
+    public Countdown(int i, int countdownAmount, JLabel timerDisplay, boolean[] GameOutcome, JLabel GameEnd) {
     	this.threadNum = i ;
         this.countdownAmount = countdownAmount ;
         this.timerDisplay = timerDisplay;
@@ -23,20 +21,28 @@ public class Countdown implements Runnable {
         this.GameEnd = GameEnd ;
     }
     
-    public Countdown(int Thread , int i, int countdownAmount ,  boolean[] GameOutcome) {
-    	this.Timer = Thread;
+    public Countdown(int i, int countdownAmount ,  boolean[] GameOutcome) {
+
         this.threadNum = i ;
         this.countdownAmount = countdownAmount ;
         this.GameOutcome = GameOutcome ;
         this.Play = false;
     }
+    
+    //Did we even need i / ThreadNum?
+    public Countdown(int i, int countdownAmount) {
+        this.threadNum = i ;
+        this.countdownAmount = countdownAmount;
+        this.Play = false;
+    }
 
     public void run() {
     	
-       	switch(Timer)
+       	switch(threadNum)
      	{
      	case 1 -> GameCountDown();
 		case 2 -> TileCountDown();
+		case 3 -> FlashCountDown();
      	}
     }
     
@@ -75,6 +81,21 @@ public class Countdown implements Runnable {
             //System.out.println("Thread: " + threadNum + " Time: " + i) ;
             try {
                 Thread.sleep(1000) ;
+            } catch (InterruptedException e) {
+                System.out.println(e);
+            }
+            countdownAmount-- ;
+        }
+        Play = false;   	
+    }
+    
+    public void FlashCountDown() {
+    	Play = true;
+        // Keeps going until countdown reaches 0 or game is over
+        while (countdownAmount > 0) {
+            //System.out.println("Thread: " + threadNum + " Time: " + i) ;
+            try {
+                Thread.sleep(750) ;
             } catch (InterruptedException e) {
                 System.out.println(e);
             }
