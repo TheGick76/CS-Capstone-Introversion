@@ -32,6 +32,14 @@ class Input extends JFrame implements KeyListener{
     private static Image CenterImage = new ImageIcon("Horse.jpg").getImage();
     private static Image SpaceImage = new ImageIcon("Squib.jpg").getImage();
 
+    private static Image Image_Q = new ImageIcon("Images/Q1.png").getImage();
+    private static Image Image_W = new ImageIcon("Images/W1.png").getImage();
+    private static Image Image_E = new ImageIcon("Images/E1.png").getImage();
+    private static Image Image_A = new ImageIcon("Images/A1.png").getImage();
+    private static Image Image_S = new ImageIcon("Images/S1.png").getImage();
+    private static Image Image_D = new ImageIcon("Images/D1.png").getImage();
+    private static Image Image_Space = new ImageIcon("Images/Space1.png").getImage();
+
     
     //For rendering the images and their offsets
     private static Image[] Pictures;
@@ -53,10 +61,17 @@ class Input extends JFrame implements KeyListener{
     	key = Inputs.length;
     	
     	Pictures = new Image[key];
-    	Arrays.fill(Pictures,Image); // Temp fill for pictures
-    	Pictures[4] = CenterImage;  // How pictures should be implemented
-    	Pictures[6] = SpaceImage;
-    	
+    	//Arrays.fill(Pictures,Image); // Temp fill for pictures
+    	//Pictures[4] = CenterImage;  // How pictures should be implemented
+    	//Pictures[6] = SpaceImage;
+
+        Pictures[0] = Image_Q;
+        Pictures[1] = Image_W;
+        Pictures[2] = Image_E;
+        Pictures[3] = Image_A;
+        Pictures[4] = Image_S;
+        Pictures[5] = Image_D;
+        Pictures[6] = Image_Space;
     	
     	Render = new float[key];
     	Arrays.fill(Render,0.25f);
