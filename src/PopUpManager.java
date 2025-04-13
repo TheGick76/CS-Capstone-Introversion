@@ -41,7 +41,7 @@ public class PopUpManager
             Game = 0;
 			Active = false;
 			CurrentFrame = null;
-			
+			MovementLock = false;
 		}
 	
 	

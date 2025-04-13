@@ -285,7 +285,11 @@ public static void main(String args[])
                         case "AUP" -> MovementLock = false;
                         case "SUP" -> MovementLock = false;
                         case "DUP" -> MovementLock = false;
-                        case "EUP" -> PopupLock = false;
+                        case "EUP" -> 
+                        {
+                            PopupLock = false;
+                            MovementLock = false;
+                        }
                     	
 
                     }          
