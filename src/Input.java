@@ -28,21 +28,21 @@ class Input extends JFrame implements KeyListener{
      private static boolean Connected = false;
     
     //Images 
-    private static Image Image = new ImageIcon("R.jpg").getImage();
+   // private Image Image = new ImageIcon(getClass().getResource("R.jpg")).getImage();
     private static Image CenterImage = new ImageIcon("Horse.jpg").getImage();
     private static Image SpaceImage = new ImageIcon("Squib.jpg").getImage();
 
-    private static Image Image_Q = new ImageIcon("Images/Q1.png").getImage();
-    private static Image Image_W = new ImageIcon("Images/W1.png").getImage();
-    private static Image Image_E = new ImageIcon("Images/E1.png").getImage();
-    private static Image Image_A = new ImageIcon("Images/A1.png").getImage();
-    private static Image Image_S = new ImageIcon("Images/S1.png").getImage();
-    private static Image Image_D = new ImageIcon("Images/D1.png").getImage();
-    private static Image Image_Space = new ImageIcon("Images/Space1.png").getImage();
+    private Image Image_Q = new ImageIcon(getClass().getResource("Images/Q1.png")).getImage();
+    private Image Image_W = new ImageIcon(getClass().getResource("Images/W1.png")).getImage();
+    private Image Image_E = new ImageIcon(getClass().getResource("Images/E1.png")).getImage();
+    private Image Image_A = new ImageIcon(getClass().getResource("Images/A1.png")).getImage();
+    private Image Image_S = new ImageIcon(getClass().getResource("Images/S1.png")).getImage();
+    private Image Image_D = new ImageIcon(getClass().getResource("Images/D1.png")).getImage();
+    private Image Image_Space = new ImageIcon(getClass().getResource("Images/Space1.png")).getImage();
 
     
     //For rendering the images and their offsets
-    private static Image[] Pictures;
+    
     private static float[] Render; 
     private static int[][] PicPos;
     private static int key;
@@ -53,25 +53,27 @@ class Input extends JFrame implements KeyListener{
     private static boolean CanRePaint = true;
     
     private static Character[] Inputs = {'q', 'w', 'e', 'a', 's','d',' '};
-
+    private Image[] Pictures = {Image_Q,Image_W,Image_E,Image_A,Image_S,Image_D,Image_Space};
 
     //Our main function
     public static void main(String args[])
     {
     	key = Inputs.length;
     	
-    	Pictures = new Image[key];
+    	//Pictures = new Image[key];
     	//Arrays.fill(Pictures,Image); // Temp fill for pictures
     	//Pictures[4] = CenterImage;  // How pictures should be implemented
     	//Pictures[6] = SpaceImage;
 
-        Pictures[0] = Image_Q;
+      //  Pictures[0] = Image_Q;
+      /*
         Pictures[1] = Image_W;
         Pictures[2] = Image_E;
         Pictures[3] = Image_A;
         Pictures[4] = Image_S;
         Pictures[5] = Image_D;
         Pictures[6] = Image_Space;
+        */
     	
     	Render = new float[key];
     	Arrays.fill(Render,0.25f);
