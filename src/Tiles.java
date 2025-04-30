@@ -1,10 +1,10 @@
 import java.awt.Color;
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.ImageIcon;
 import java.awt.Graphics;
 import java.awt.Image;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 
 public class Tiles extends JPanel{
 
@@ -26,13 +26,13 @@ public class Tiles extends JPanel{
     //"Empty" "People" "Cat" "Ect."
     String tileType;
 
-    private static Image Image_Person = new ImageIcon("Images/henry.png").getImage();
-    private static Image Image_Player = new ImageIcon("Images/steve.png").getImage();
-    private static Image Image_Crush = new ImageIcon("Images/alex.png").getImage();
-    private static Image Image_Maze = new ImageIcon("Images/maze.png").getImage();
-    private static Image Image_Cat = new ImageIcon("Images/cat.png").getImage();
-    private static Image Image_Platformer = new ImageIcon("Images/platformer.png").getImage();
-    private static Image Image_Simon = new ImageIcon("Images/simon.png").getImage();
+    private Image Image_Person = new ImageIcon(getClass().getResource("Images/henry.png")).getImage();
+    private Image Image_Player = new ImageIcon(getClass().getResource("Images/steve.png")).getImage();
+    private Image Image_Crush = new ImageIcon(getClass().getResource("Images/alex.png")).getImage();
+    private Image Image_Maze = new ImageIcon(getClass().getResource("Images/maze.png")).getImage();
+    private Image Image_Cat = new ImageIcon(getClass().getResource("Images/cat.png")).getImage();
+    private Image Image_Platformer = new ImageIcon(getClass().getResource("Images/platformer.png")).getImage();
+    private Image Image_Simon = new ImageIcon(getClass().getResource("Images/simon.png")).getImage();
 
     //Constructor
     Tiles(int tileNum, String tileType)

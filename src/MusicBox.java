@@ -1,4 +1,6 @@
 import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -112,30 +114,49 @@ public class MusicBox implements Runnable {
             //File stuff
             String path;
             File musicPath;
+            InputStream soundURL;
+            URL actualsoundURL;
             switch(Song)
             {
-                case 1 -> {path = "src\\Assets\\Boogie.wav";
-                musicPath = new File(path);
+                case 1 -> {path = "Assets/Boogie.wav";
+              //  musicPath = new File(getClass().getResource(path).toURI());
+               // soundURL = getClass().getResourceAsStream(path);
+              //  musicPath = new File(soundURL.toString());
+              actualsoundURL = getClass().getResource(path);
             }
-                case 2 -> {path = "src\\Assets\\the-messenger.wav";
-                musicPath = new File(path);
+                case 2 -> {path = "Assets/the-messenger.wav";
+               // musicPath = new File(getClass().getResource(path).toURI());
+               // soundURL = getClass().getResourceAsStream(path);
+               // musicPath = new File(soundURL.toString());
+               actualsoundURL = getClass().getResource(path);
             }
-                case 3 -> {path = "src\\Assets\\Level2.wav";
-                musicPath = new File(path);
+                case 3 -> {path = "Assets/Level2.wav";
+               // musicPath = new File(getClass().getResource(path).toURI());
+                //soundURL = getClass().getResourceAsStream(path);
+               // musicPath = new File(soundURL.toString());
+               actualsoundURL = getClass().getResource(path);
             }
-            case 4 -> {path = "src\\Assets\\Winter4.wav";
-                musicPath = new File(path);
+            case 4 -> {path = "Assets/Winter4.wav";
+          //  musicPath = new File(getClass().getResource(path).toURI());
+           // soundURL = getClass().getResourceAsStream(path);
+               // musicPath = new File(soundURL.toString());
+               actualsoundURL = getClass().getResource(path);
             }
-                default -> {path = "src\\Assets\\Boogie.wav";
-                musicPath = new File(path);
+                default -> {path = "Assets/Boogie.wav";
+               // musicPath = new File(getClass().getResource(path).toURI());
+              // soundURL = getClass().getResourceAsStream(path);
+               // musicPath = new File(soundURL.toString());
+               actualsoundURL = getClass().getResource(path);
             }
             }
             
 
-            if(musicPath.exists())
+
+            if(actualsoundURL != null)
             {
+                System.out.println("HELLLLLLO");
             //Audio stream
-            AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+            AudioInputStream audioInput = AudioSystem.getAudioInputStream(actualsoundURL);//musicPath);
             Clip clip = AudioSystem.getClip();
             //Start music
                 clip.open(audioInput);
@@ -165,6 +186,11 @@ public class MusicBox implements Runnable {
                     System.out.println(e);
                 }
                 return;
+            }
+            else
+            {
+
+                System.out.println("Bro what");
             }
         
         } catch (Exception e) {

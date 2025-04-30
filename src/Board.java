@@ -1,7 +1,6 @@
 
 import java.util.ArrayList;
 import java.util.Random;
-
 import javax.swing.JLabel;
 
 
@@ -47,11 +46,11 @@ public class Board {
          				BoardTiles[i].PopupGame = 1;}
          	case 16 -> {BoardTiles[i] = new Tiles(TileCount, "POPUP");
          				BoardTiles[i].PopupGame = 2;}
-         /*	case 20 -> {BoardTiles[i] = new Tiles(TileCount, "MUSIC");
+         	case 20 -> {BoardTiles[i] = new Tiles(TileCount, "MUSIC");
 				            BoardTiles[i].Music();
 				            BoardTiles[i].credits = "";
 				            BoardTiles[i].curSong = "";}
-		*/
+		
          	case 22 -> BoardTiles[i] = new Tiles(TileCount, "PERSON" , 3);
             case 25 ->{BoardTiles[i] = new Tiles(TileCount, "POPUP");
                 	   BoardTiles[i].PopupGame = 3;}
